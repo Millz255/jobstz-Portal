@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Job;
 
 class JobController extends Controller
 {
@@ -11,25 +12,23 @@ class JobController extends Controller
     {
         $query = \App\Models\Job::query();
 
-        // Filter by keyword in title
+        // Apply filters if present
         if ($request->has('search') && !empty($request->search)) {
             $query->where('title', 'LIKE', '%' . $request->search . '%');
         }
 
-        // Filter by category
         if ($request->has('category') && !empty($request->category)) {
             $query->where('category_id', $request->category);
         }
 
-        // Filter by location
         if ($request->has('location') && !empty($request->location)) {
             $query->where('location_id', $request->location);
         }
 
-        // Eager load the location relationship to avoid N+1 queries
-        $jobs = $query->with('location')->get(); // This loads the jobs with their location data
+        // Paginate jobs, limit to 10 jobs per page
+        $jobs = $query->with('location')->paginate(10);
 
-        // Get categories and locations for dropdowns (if needed)
+        // Get categories and locations for dropdowns
         $categories = \App\Models\Category::all();
         $locations = \App\Models\Location::all();
 
@@ -38,13 +37,17 @@ class JobController extends Controller
 
 
 
+
+
         public function create()
     {
         // Get all categories
         $categories = \App\Models\Category::all();
 
+        $locations = \App\Models\Location::all();
+
         // Pass categories to the view
-        return view('admin.jobs.create', compact('categories'));
+        return view('admin.jobs.create', compact('categories', 'locations'));
     }
 
 
@@ -54,14 +57,20 @@ class JobController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'company' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
+            'location_id' => 'required|integer',
             'deadline' => 'required|date',
             'date_posted' => 'nullable|date',
             'is_expired' => 'boolean',
-            'application_link' => 'nullable|url', // This line should be included
+            'application_link' => 'nullable|url',
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image upload
         ]);
 
-        \App\Models\Job::create($validatedData);
+        if ($request->hasFile('company_logo')) {
+            $imagePath = $request->file('company_logo')->store('company_logos', 'public'); // Store in storage/app/public/company_logos
+            $validatedData['company_logo'] = $imagePath; // Save path to database
+        }
+
+        Job::create($validatedData);
 
         return redirect('/admin/jobs')->with('success', 'Job created successfully!');
     }
@@ -69,7 +78,11 @@ class JobController extends Controller
     public function edit($id)
     {
         $job = \App\Models\Job::findOrFail($id);
-        return view('admin.jobs.edit', compact('job'));
+        $categories = \App\Models\Category::all(); // Fetch categories (you might already have this, ensure it's present if you use categories in edit form)
+        $locations = \App\Models\Location::all(); // Fetch all locations
+
+        // Pass job, categories, and locations to the view
+        return view('admin.jobs.edit', compact('job', 'categories', 'locations'));
     }
 
     public function update(Request $request, $id)
@@ -78,14 +91,20 @@ class JobController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'company' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
+            'location_id' => 'required|integer',
             'deadline' => 'required|date',
             'date_posted' => 'nullable|date',
             'is_expired' => 'boolean',
             'application_link' => 'nullable|url',
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image upload
         ]);
 
-        \App\Models\Job::where('id', $id)->update($validatedData);
+        if ($request->hasFile('company_logo')) {
+            $imagePath = $request->file('company_logo')->store('company_logos', 'public'); // Store in storage/app/public/company_logos
+            $validatedData['company_logo'] = $imagePath; // Save path to database
+        }
+
+        Job::where('id', $id)->update($validatedData);
 
         return redirect('/admin/jobs')->with('success', 'Job updated successfully!');
     }
@@ -124,6 +143,8 @@ class JobController extends Controller
 
         return view('admin.jobs.index', compact('jobs', 'categories', 'locations'));
     }
+
+
 
 
 }

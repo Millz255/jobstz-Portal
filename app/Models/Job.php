@@ -15,7 +15,7 @@ class Job extends Model
         'description',
         'company',
         'company_logo',
-        'location_id', 
+        'location_id',
         'category_id',
         'deadline',
         'date_posted',

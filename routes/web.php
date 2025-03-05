@@ -48,6 +48,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('jobs.index');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/jobs/load-more', [HomeController::class, 'loadMore'])->name('jobs.loadMore');
 Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
 Route::get('/search', [HomeController::class, 'search'])->name('jobs.search');
@@ -57,6 +58,7 @@ Route::get('/government/jobs', [JobController::class, 'governmentJobs'])->name('
 Route::post('/jobs/{id}/mark-expired', [JobController::class, 'markExpired'])->name('admin.jobs.markExpired');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/articles', [BlogController::class, 'index'])->name('articles.index');
+
 
 
 

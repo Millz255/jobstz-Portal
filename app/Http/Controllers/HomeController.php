@@ -8,17 +8,18 @@ use App\Models\Category;
 use App\Models\Location;
 use Illuminate\Support\Facades\Mail;
 use App\Models\ContactMessage;
+use App\Mail\ContactFormSubmitted;
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        // Get search filter data from the request
+        
         $search = $request->input('search');
         $category_id = $request->input('category');
         $location_id = $request->input('location');
 
-        // Query the jobs with filtering options
+        
         $jobs = Job::query()
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%$search%")
@@ -31,9 +32,9 @@ class HomeController extends Controller
                 $query->where('location_id', $location_id);
             })
             ->latest()
-            ->paginate(12); // Paginate results
+            ->paginate(12); 
 
-        // Fetch categories and locations for the dropdown
+
         $categories = Category::all();
         $locations = Location::all();
 
@@ -49,6 +50,32 @@ class HomeController extends Controller
     public function about()
     {
         return view('about');
+    }
+
+    public function submitContactForm(Request $request)
+    {
+        
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'subject' => 'required|string|max:255', 
+            'message' => 'required|string',
+        ]);
+    
+        
+        ContactMessage::create($validatedData);
+    
+        // 3. Send email notification
+        $adminEmail = 'mgimwaemily@gmail.com';
+        Mail::to($adminEmail)->send(new ContactFormSubmitted($validatedData));
+    
+        return redirect()->route('contact')->with('success', 'Your message has been sent successfully!');
+    }
+
+
+    public function contact()
+    {
+        return view('contact'); 
     }
 
 
