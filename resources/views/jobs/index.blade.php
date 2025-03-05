@@ -8,13 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
-            background-color: #e8f0fe;
+            background-color: #e8f0fe; /* Very light blue background */
             color: #333;
             font-family: 'Arial', sans-serif;
-            overflow-x: hidden; /* Prevent horizontal scrollbar */
         }
         .navbar {
-            background-color: #1a237e;
+            background-color: #1a237e; /* Deep Navy Blue Navbar */
         }
         .navbar .navbar-brand, .navbar-nav .nav-link {
             color: white;
@@ -25,7 +24,7 @@
             text-decoration: none;
         }
         .hero-section {
-            background: linear-gradient(135deg, #1a237e, #7986cb);
+            background: linear-gradient(135deg, #1a237e, #7986cb); /* Deep Blue Gradient Hero */
             color: white;
             padding: 80px 0;
             text-align: center;
@@ -50,56 +49,21 @@
             border-radius: 12px;
             box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
         }
-
-        /* --- Sidebar Widget Styles --- */
-        .sidebar-widget {
-            position: fixed; /* Fixed sidebar */
-            top: 0;
-            left: -300px; /* Initially hidden off-screen */
-            width: 300px;
-            height: 100%;
+        .search-bar {
+            margin-bottom: 30px;
+            padding: 25px;
             background-color: #f0f0f0;
-            padding: 30px;
-            box-shadow: 5px 0 20px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; /* In case search form is long */
-            transition: left 0.3s ease-in-out; /* Slide-in animation */
-            z-index: 1000; /* Ensure it's on top of other content */
+            border-radius: 8px;
         }
-
-        .sidebar-widget.open {
-            left: 0; /* Slide in to view */
-        }
-
-        .sidebar-widget .search-bar { /* Reset search bar styles inside sidebar */
-            margin-bottom: 20px;
-            padding: 0;
-            background-color: transparent;
-            border-radius: 0;
-        }
-
-        .sidebar-widget .search-bar .form-control {
-            margin-bottom: 10px; /* Reduced margin */
+        .search-bar .form-control {
+            margin-bottom: 15px;
             border-radius: 6px;
-            padding: 10px; /* Reduced padding */
+            padding: 12px;
         }
-
-        .sidebar-widget .search-bar .btn-blue {
-            padding: 10px 15px; /* Reduced button padding */
+        .search-bar .btn-blue {
+            padding: 12px 20px;
             border-radius: 6px;
         }
-
-        #close-search-widget {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 1.5em;
-            cursor: pointer;
-            color: #555;
-        }
-
-
         .job-listing {
             border: none;
             padding: 20px;
@@ -166,24 +130,6 @@
             padding: 12px;
             border-radius: 6px;
         }
-
-        /* --- Button to Open Sidebar --- */
-        #open-search-widget-btn {
-            background-color: #f0f0f0;
-            color: #333;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 20px; /* Add margin to separate from listings */
-            display: inline-flex; /* Align icon and text */
-            align-items: center;
-            gap: 8px;
-        }
-        #open-search-widget-btn:hover {
-            background-color: #e0e0e0;
-        }
-
     </style>
 </head>
 <body>
@@ -216,78 +162,72 @@
     </div>
 </nav>
 
-<div class="hero-section">
-    <h1 class="hero-title">Find Your Dream Job with Jobstz</h1>
-    <p class="hero-slogan">Your Career, Your Future starts here.</p>
-</div>
-
-<div class="sidebar-widget" id="searchSidebar">  <button id="close-search-widget" onclick="toggleSearchWidget()" aria-label="Close Search Widget">&times;</button>
-    <div class="search-bar">
-        <form method="GET" action="{{ route('jobs.index') }}" class="d-flex flex-column">
-            <div class="input-group mb-2">
-                <input type="text" name="search" class="form-control" placeholder="Job title or keywords" value="{{ request('search') }}" aria-label="Search Keyword">
-                <span class="input-group-text"><i class="fas fa-search"></i></span>
-            </div>
-            <div class="input-group mb-2">
-                <select name="category" class="form-control">
-                    <option value="">All Categories</option>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                    @endforeach
-                </select>
-                <span class="input-group-text"><i class="fas fa-folder"></i></span>
-            </div>
-            <div class="input-group mb-2">
-                <select name="location" class="form-control">
-                    <option value="">All Locations</option>
-                    @foreach ($locations as $location)
-                        <option value="{{ $location->id }}" {{ request('location') == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
-                    @endforeach
-                </select>
-                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-            </div>
-            <button type="submit" class="btn btn-blue w-100">Search Jobs</button>
-        </form>
-    </div>
-</div>
-
-
-<div class="container">
-    <button id="open-search-widget-btn" onclick="toggleSearchWidget()"><i class="fas fa-search"></i> Show Job Search</button>
-
-    <h2 class="mb-4">Latest Job Listings</h2>
-    <div id="job-listings">
-        @foreach ($jobs as $job)
-            <div class="job-listing @if($job->expired) expired @elseif($job->soon_expiring) soon-expiring @endif">
-                <div class="d-flex align-items-center mb-3">
-                <img src="{{ asset('storage/' . $job->company_logo) }}" alt="{{ $job->company }} logo" class="me-3" style="max-width: 80px;">
-                    <div>
-                        <h3 class="mb-0">{{ $job->title }}</h3>
-                        <p class="mb-0">
-                            <strong>{{ $job->company }}</strong> - <i class="fas fa-map-marker-alt me-1"></i>{{ optional($job->location)->name ?: 'Location not available' }}
-                        </p>
-                    </div>
+    <div class="hero-section">
+        <h1 class="hero-title">Find Your Dream Job with Jobstz</h1>
+        <p class="hero-slogan">Your Career, Your Future starts here.</p>
+        <div class="container search-bar hero-search-bar">
+            <form method="GET" action="{{ route('jobs.index') }}" class="d-flex flex-column">
+                <div class="input-group mb-2">
+                    <input type="text" name="search" class="form-control" placeholder="Job title or keywords" value="{{ request('search') }}" aria-label="Search Keyword">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
                 </div>
-                <p class="mb-3">{{ Str::limit($job->description, 150) }}</p>
-                <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-blue">View Details</a>
-            </div>
-        @endforeach
+                <div class="input-group mb-2">
+                    <select name="category" class="form-control">
+                        <option value="">All Categories</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    <span class="input-group-text"><i class="fas fa-folder"></i></span>
+                </div>
+                <div class="input-group mb-2">
+                    <select name="location" class="form-control">
+                        <option value="">All Locations</option>
+                        @foreach ($locations as $location)
+                            <option value="{{ $location->id }}" {{ request('location') == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
+                        @endforeach
+                    </select>
+                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                </div>
+                <button type="submit" class="btn btn-blue w-100">Search Jobs</button>
+            </form>
+        </div>
     </div>
 
-    <div id="load-more" class="text-center mt-5">
-        @if (count($jobs) >= 12)
-            <button class="btn btn-blue" id="load-more-button">Load More Jobs</button>
-        @endif
+    <div class="container">
+        <h2 class="mb-4">Latest Job Listings</h2>
+        <div id="job-listings">
+            @foreach ($jobs as $job)
+                <div class="job-listing @if($job->expired) expired @elseif($job->soon_expiring) soon-expiring @endif">
+                    <div class="d-flex align-items-center mb-3">
+                    <img src="{{ asset('storage/' . $job->company_logo) }}" alt="{{ $job->company }} logo" class="me-3" style="max-width: 80px;">
+                        <div>
+                            <h3 class="mb-0">{{ $job->title }}</h3>
+                            <p class="mb-0">
+                                <strong>{{ $job->company }}</strong> - <i class="fas fa-map-marker-alt me-1"></i>{{ optional($job->location)->name ?: 'Location not available' }}
+                            </p>
+                        </div>
+                    </div>
+                    <p class="mb-3">{{ Str::limit($job->description, 150) }}</p>
+                    <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-blue">View Details</a>
+                </div>
+            @endforeach
+        </div>
+        
+        <div id="load-more" class="text-center mt-5">
+            @if (count($jobs) >= 12)
+                <button class="btn btn-blue" id="load-more-button">Load More Jobs</button>
+            @endif
+        </div>
     </div>
-</div>
 
-<div class="bottom-nav">
-    <a href="{{ route('jobs.index') }}">Job Listings</a>
-    <a href="{{ route('about') }}">About</a>
-    <a href="{{ route('contact') }}">Contact</a>
-</div>
+    <div class="bottom-nav">
+        <a href="{{ route('jobs.index') }}">Job Listings</a>
+        <a href="{{ route('about') }}">About</a>
+        <a href="{{ route('contact') }}">Contact</a>
+    </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0tn9kY1wzO8O+Nf4vFLHKkBd/l6ZxDqUOEdXn7r4WR0mRp4p" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
@@ -307,12 +247,8 @@
             });
         });
     });
-
-    function toggleSearchWidget() {
-        const sidebar = document.getElementById('searchSidebar');
-        sidebar.classList.toggle('open');
-    }
 </script>
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0tn9kY1wzO8O+Nf4vFLHKkBd/l6ZxDqUOEdXn7r4WR0mRp4p" crossorigin="anonymous"></script>

@@ -58,21 +58,47 @@ class JobController extends Controller
             'description' => 'required|string',
             'company' => 'required|string|max:255',
             'location_id' => 'required|integer',
+            'category_id' => 'required|integer',
             'deadline' => 'required|date',
             'date_posted' => 'nullable|date',
             'is_expired' => 'boolean',
             'application_link' => 'nullable|url',
-            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image upload
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         if ($request->hasFile('company_logo')) {
-            $imagePath = $request->file('company_logo')->store('company_logos', 'public'); // Store in storage/app/public/company_logos
-            $validatedData['company_logo'] = $imagePath; // Save path to database
+            $imagePath = $request->file('company_logo')->store('company_logos', 'public');
+            $validatedData['company_logo'] = $imagePath;
         }
 
         Job::create($validatedData);
 
         return redirect('/admin/jobs')->with('success', 'Job created successfully!');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'company' => 'required|string|max:255',
+            'location_id' => 'required|integer',
+            'category_id' => 'required|integer',
+            'deadline' => 'required|date',
+            'date_posted' => 'nullable|date',
+            'is_expired' => 'boolean',
+            'application_link' => 'nullable|url',
+            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('company_logo')) {
+            $imagePath = $request->file('company_logo')->store('company_logos', 'public');
+            $validatedData['company_logo'] = $imagePath;
+        }
+
+        Job::where('id', $id)->update($validatedData); // $validatedData now INCLUDES category_id
+
+        return redirect('/admin/jobs')->with('success', 'Job updated successfully!');
     }
 
     public function edit($id)
@@ -83,30 +109,6 @@ class JobController extends Controller
 
         // Pass job, categories, and locations to the view
         return view('admin.jobs.edit', compact('job', 'categories', 'locations'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'company' => 'required|string|max:255',
-            'location_id' => 'required|integer',
-            'deadline' => 'required|date',
-            'date_posted' => 'nullable|date',
-            'is_expired' => 'boolean',
-            'application_link' => 'nullable|url',
-            'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image upload
-        ]);
-
-        if ($request->hasFile('company_logo')) {
-            $imagePath = $request->file('company_logo')->store('company_logos', 'public'); // Store in storage/app/public/company_logos
-            $validatedData['company_logo'] = $imagePath; // Save path to database
-        }
-
-        Job::where('id', $id)->update($validatedData);
-
-        return redirect('/admin/jobs')->with('success', 'Job updated successfully!');
     }
 
     public function destroy($id)
@@ -132,19 +134,25 @@ class JobController extends Controller
     public function governmentJobs()
     {
         // Assuming category name is 'Government' in the categories table
-        $governmentCategoryId = \App\Models\Category::where('name', 'Government')->first()->id;
+        $governmentCategory = \App\Models\Category::where('name', 'Government')->first();
 
-        // Get all jobs with the government category
-        $jobs = \App\Models\Job::where('category_id', $governmentCategoryId)->get();
+        if ($governmentCategory) {
+            $governmentCategoryId = $governmentCategory->id;
 
-        // Get categories and locations for dropdowns (optional if needed)
-        $categories = \App\Models\Category::all();
-        $locations = \App\Models\Location::all();
+            // Get jobs with the government category
+            $jobs = Job::where('category_id', $governmentCategoryId)->with('location')->paginate(12);
 
-        return view('admin.jobs.index', compact('jobs', 'categories', 'locations'));
+            // Get categories and locations for dropdowns (for search filters in frontend)
+            $categories = \App\Models\Category::all();
+            $locations = \App\Models\Location::all();
+
+            // Return the frontend view 'jobs.index'
+            return view('jobs.index', compact('jobs', 'categories', 'locations'));
+
+        } else {
+            // Handle case where 'Government' category is not found (optional error handling)
+            return redirect()->route('jobs.index')->with('error', 'Government job category not found.');
+        }
     }
-
-
-
 
 }

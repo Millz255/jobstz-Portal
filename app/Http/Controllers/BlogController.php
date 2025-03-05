@@ -9,9 +9,14 @@ class BlogController extends Controller
 {
     public function index()
     {
-        // Paginate articles, 10 per page
-        $articles = Article::latest()->paginate(10);
-        return view('blog.index', compact('articles'));
+        $articles = Article::latest()->paginate(6); // Get recent articles
+
+        // Fetch most read articles - Example: Order by created_at (replace with your logic)
+        $mostReadArticles = Article::orderBy('created_at', 'desc')
+                                     ->take(5)
+                                     ->get();
+
+        return view('blog.index', compact('articles', 'mostReadArticles'));
     }
 
     public function show($id)
