@@ -50,6 +50,22 @@
                 <label class="form-label">Current Logo:</label>
                 <img src="{{ asset('storage/' . $job->company_logo) }}" alt="Current Company Logo" style="max-width: 100px; height: auto;">
             </div>
+
+            <div class="mb-3">
+            <label for="pdf_file" class="form-label">Job Description PDF (Optional):</label>
+            <input type="file" id="pdf_file" name="pdf_file" class="form-control">
+            <small class="form-text text-muted">Upload a new PDF to replace the current one, or leave blank to keep the existing PDF (if any).</small>
+        </div>
+
+        @if($job->pdf_path)
+        <div class="mb-3">
+            <label class="form-label">Current PDF:</label>
+            <p>
+                <a href="{{ asset('storage/' . $job->pdf_path) }}" target="_blank">View Current PDF</a>
+            </p>
+        </div>
+        @endif
+        
             @endif
             <div class="mb-3">
                 <label for="category_id" class="form-label">Category:</label>

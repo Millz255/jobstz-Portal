@@ -64,11 +64,17 @@ class JobController extends Controller
             'is_expired' => 'boolean',
             'application_link' => 'nullable|url',
             'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'pdf_file' => 'nullable|mimes:pdf|max:10240',
         ]);
 
         if ($request->hasFile('company_logo')) {
             $imagePath = $request->file('company_logo')->store('company_logos', 'public');
             $validatedData['company_logo'] = $imagePath;
+        }
+
+        if ($request->hasFile('pdf_file')) {
+            $pdfPath = $request->file('pdf_file')->store('job_pdfs', 'public'); 
+            $validatedData['pdf_path'] = $pdfPath;
         }
 
         Job::create($validatedData);
@@ -89,6 +95,7 @@ class JobController extends Controller
             'is_expired' => 'boolean',
             'application_link' => 'nullable|url',
             'company_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'pdf_file' => 'nullable|mimes:pdf|max:10240',
         ]);
 
         if ($request->hasFile('company_logo')) {
@@ -96,7 +103,12 @@ class JobController extends Controller
             $validatedData['company_logo'] = $imagePath;
         }
 
-        Job::where('id', $id)->update($validatedData); // $validatedData now INCLUDES category_id
+        if ($request->hasFile('pdf_file')) {
+            $pdfPath = $request->file('pdf_file')->store('job_pdfs', 'public'); // Store PDFs in 'job_pdfs' directory
+            $validatedData['pdf_path'] = $pdfPath; // Save path to validated data
+        }
+
+        Job::where('id', $id)->update($validatedData); 
 
         return redirect('/admin/jobs')->with('success', 'Job updated successfully!');
     }

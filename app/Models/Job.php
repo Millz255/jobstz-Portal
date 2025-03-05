@@ -21,6 +21,7 @@ class Job extends Model
         'date_posted',
         'is_expired',
         'application_link',
+        'pdf_path',
     ];
 
     /**

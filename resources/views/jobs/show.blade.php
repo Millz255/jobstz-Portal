@@ -174,6 +174,15 @@
             {!! nl2br(e($job->description)) !!} {{-- Use nl2br to format line breaks, e() for escaping --}}
         </div>
 
+        @if($job->pdf_path)
+            <div class="mb-3">
+                <p>
+                    <strong>Job Description (PDF):</strong>
+                    <a href="{{ asset('storage/' . $job->pdf_path) }}" target="_blank">Download PDF</a>
+                </p>
+            </div>
+        @endif
+
         <div class="job-info" style="margin-top: 20px;"> {{-- Added margin to separate from description --}}
             <p><strong>Deadline:</strong> {{ \Carbon\Carbon::parse($job->deadline)->format('F d, Y') }}</p>
         </div>

@@ -45,6 +45,12 @@
             </div>
 
             <div class="mb-3">
+            <label for="pdf_file" class="form-label">Job Description PDF (Optional):</label>
+            <input type="file" id="pdf_file" name="pdf_file" class="form-control">
+            <small class="form-text text-muted">Upload job description as PDF file (PDF, max 10MB).</small>
+        </div>
+
+            <div class="mb-3">
                 <label for="location_id" class="form-label">Location:</label>
                 <select id="location_id" name="location_id" class="form-control" required>
                     <option value="">Select Location</option>
