@@ -9,21 +9,21 @@ use App\Models\Location;
 use Illuminate\Support\Facades\Mail;
 use App\Models\ContactMessage;
 use App\Mail\ContactFormSubmitted;
+use App\Models\Article;
 
 class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        
+
         $search = $request->input('search');
         $category_id = $request->input('category');
         $location_id = $request->input('location');
 
-        
         $jobs = Job::query()
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%$search%")
-                      ->orWhere('description', 'like', "%$search%");
+                    ->orWhere('description', 'like', "%$search%");
             })
             ->when($category_id, function ($query) use ($category_id) {
                 $query->where('category_id', $category_id);
@@ -32,13 +32,14 @@ class HomeController extends Controller
                 $query->where('location_id', $location_id);
             })
             ->latest()
-            ->paginate(12); 
-
+            ->paginate(12);
 
         $categories = Category::all();
         $locations = Location::all();
 
-        return view('index', compact('jobs', 'categories', 'locations'));
+        $recentArticles = Article::latest()->take(3)->get(); // <---- Fetch recent articles**
+
+        return view('index', compact('jobs', 'categories', 'locations', 'recentArticles')); // <---- Pass articles here
     }
 
     public function show($id)

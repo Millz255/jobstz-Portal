@@ -11,8 +11,14 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $articles = Article::all();
-        return view('admin.articles.index', compact('articles'));
+        $articles = Article::latest()->paginate(10); // Fetch articles for the main listing, paginated
+
+        // **Fetch Most Read Articles (Placeholder Logic - Adapt as needed)**
+        $mostReadArticles = Article::orderBy('created_at', 'desc') // Example: Order by latest (replace with your actual logic)
+                                     ->limit(5) // Limit to 5 most read articles
+                                     ->get();
+
+        return view('admin.articles.index', compact('articles', 'mostReadArticles')); // Pass both $articles and $mostReadArticles
     }
 
     public function create()
@@ -82,7 +88,7 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
-        
+
         // Delete image if it exists
         if ($article->image && Storage::exists('public/' . $article->image)) {
             Storage::delete('public/' . $article->image);

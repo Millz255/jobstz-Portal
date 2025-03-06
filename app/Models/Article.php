@@ -15,5 +15,6 @@ class Article extends Model
         'image',
         'video',
         'caption',
+        'thumbnail',
     ];
 }
