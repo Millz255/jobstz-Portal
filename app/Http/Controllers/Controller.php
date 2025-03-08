@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Routing\Controller as BaseController; // Add this line to use the correct base Controller
+use Illuminate\Routing\Controller as BaseController; 
 
-abstract class Controller extends BaseController // Change extends class to BaseController
+abstract class Controller extends BaseController 
 {
-    // You can leave the body empty or add any common logic for your controllers here
+    
 }
