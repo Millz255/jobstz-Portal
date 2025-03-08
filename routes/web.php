@@ -65,8 +65,8 @@ Route::get('/articles', [BlogController::class, 'index'])->name('articles.index'
 // Blog Routes
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
-Route::get('/articles', [BlogController::class, 'index'])->name('articles.index'); // Changed route path to /articles (common for blog index) and route name to articles.index
-Route::get('/articles/{id}', [BlogController::class, 'show'])->name('articles.show'); // Changed route path to /articles/{id} and route name to articles.show
+Route::get('/articles', [BlogController::class, 'index'])->name('articles.index'); 
+Route::get('/articles/{id}', [BlogController::class, 'show'])->name('articles.show'); 
 
 
 // Auth Routes
