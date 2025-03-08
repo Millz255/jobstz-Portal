@@ -11,7 +11,7 @@
             background-color: #e8f0fe;
             color: #333;
             font-family: 'Arial', sans-serif;
-            overflow-x: hidden; /* Prevent horizontal scrollbar */
+            overflow-x: hidden; 
         }
         .navbar {
             background-color: #1a237e;
@@ -44,7 +44,7 @@
             color: #e0e0e0;
         }
         .container {
-            max-width: 1200px; /* Increased container width to accommodate sidebar */
+            max-width: 1200px; 
             background: white;
             padding: 30px;
             border-radius: 12px;
@@ -53,24 +53,24 @@
 
         /* --- Sidebar Widget Styles --- */
         .sidebar-widget {
-            position: fixed; /* Fixed sidebar */
+            position: fixed; 
             top: 0;
-            left: -300px; /* Initially hidden off-screen */
+            left: -300px; 
             width: 300px;
             height: 100%;
             background-color: #f0f0f0;
             padding: 30px;
             box-shadow: 5px 0 20px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; /* In case search form is long */
-            transition: left 0.3s ease-in-out; /* Slide-in animation */
-            z-index: 1000; /* Ensure it's on top of other content */
+            overflow-y: auto; 
+            transition: left 0.3s ease-in-out; 
+            z-index: 1000; 
         }
 
         .sidebar-widget.open {
-            left: 0; /* Slide in to view */
+            left: 0; 
         }
 
-        .sidebar-widget .search-bar { /* Reset search bar styles inside sidebar */
+        .sidebar-widget .search-bar { 
             margin-bottom: 20px;
             padding: 0;
             background-color: transparent;
@@ -78,13 +78,13 @@
         }
 
         .sidebar-widget .search-bar .form-control {
-            margin-bottom: 10px; /* Reduced margin */
+            margin-bottom: 10px; 
             border-radius: 6px;
-            padding: 10px; /* Reduced padding */
+            padding: 10px; 
         }
 
         .sidebar-widget .search-bar .btn-blue {
-            padding: 10px 15px; /* Reduced button padding */
+            padding: 10px 15px; 
             border-radius: 6px;
         }
 
