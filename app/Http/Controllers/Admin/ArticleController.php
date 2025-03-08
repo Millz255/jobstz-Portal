@@ -11,14 +11,14 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $articles = Article::latest()->paginate(10); // Fetch articles for the main listing, paginated
+        $articles = Article::latest()->paginate(10); 
 
-        // **Fetch Most Read Articles (Placeholder Logic - Adapt as needed)**
-        $mostReadArticles = Article::orderBy('created_at', 'desc') // Example: Order by latest (replace with your actual logic)
-                                     ->limit(5) // Limit to 5 most read articles
+  
+        $mostReadArticles = Article::orderBy('created_at', 'desc') 
+                                     ->limit(5) 
                                      ->get();
 
-        return view('admin.articles.index', compact('articles', 'mostReadArticles')); // Pass both $articles and $mostReadArticles
+        return view('admin.articles.index', compact('articles', 'mostReadArticles')); 
     }
 
     public function create()
