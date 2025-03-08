@@ -16,7 +16,7 @@ class JobController extends Controller
     {
         $query = \App\Models\Job::query();
 
-        // Apply filters if present
+        
         if ($request->has('search') && !empty($request->search)) {
             $query->where('title', 'LIKE', '%' . $request->search . '%');
         }
@@ -29,10 +29,10 @@ class JobController extends Controller
             $query->where('location_id', $request->location);
         }
 
-        // Paginate jobs, limit to 10 jobs per page
+        
         $jobs = $query->with('location')->paginate(10);
 
-        // Get categories and locations for dropdowns
+        
         $categories = \App\Models\Category::all();
         $locations = \App\Models\Location::all();
 
@@ -45,12 +45,12 @@ class JobController extends Controller
 
         public function create()
     {
-        // Get all categories
+        
         $categories = \App\Models\Category::all();
 
         $locations = \App\Models\Location::all();
 
-        // Pass categories to the view
+        
         return view('admin.jobs.create', compact('categories', 'locations'));
     }
 
@@ -108,8 +108,8 @@ class JobController extends Controller
         }
 
         if ($request->hasFile('pdf_file')) {
-            $pdfPath = $request->file('pdf_file')->store('job_pdfs', 'public'); // Store PDFs in 'job_pdfs' directory
-            $validatedData['pdf_path'] = $pdfPath; // Save path to validated data
+            $pdfPath = $request->file('pdf_file')->store('job_pdfs', 'public'); 
+            $validatedData['pdf_path'] = $pdfPath; 
         }
 
         Job::where('id', $id)->update($validatedData); 
@@ -120,10 +120,10 @@ class JobController extends Controller
     public function edit($id)
     {
         $job = \App\Models\Job::findOrFail($id);
-        $categories = \App\Models\Category::all(); // Fetch categories (you might already have this, ensure it's present if you use categories in edit form)
-        $locations = \App\Models\Location::all(); // Fetch all locations
+        $categories = \App\Models\Category::all(); 
+        $locations = \App\Models\Location::all(); 
 
-        // Pass job, categories, and locations to the view
+        
         return view('admin.jobs.edit', compact('job', 'categories', 'locations'));
     }
 
@@ -136,22 +136,22 @@ class JobController extends Controller
     public function markExpired($id)
     {
         $job = Job::findOrFail($id);
-        $job->is_expired = true; // Assuming you have 'is_expired' as a boolean column
+        $job->is_expired = true; 
         $job->save();
         return redirect()->route('admin.jobs.index')->with('success', 'Job marked as expired!');
     }
 
 
-    public function governmentJobs(Request $request): View // Assuming you are using Request, and returning a View
+    public function governmentJobs(Request $request): View 
     {
-        // ... your existing logic to fetch government jobs ...
+        
         $query = Job::query()->whereHas('category', function ($query) {
-            $query->where('name', 'Government'); // Assuming 'Government' is your category name
+            $query->where('name', 'Government'); 
         });
 
-        // Apply filters (search, category, location) if needed -  add your existing filtering logic here
+        
 
-        $jobs = $query->latest()->paginate(12); // Or ->get() if not paginating
+        $jobs = $query->latest()->paginate(12); 
 
         // Fetch recent articles for the sidebar
         $recentArticles = Article::orderBy('created_at', 'desc')
@@ -161,11 +161,11 @@ class JobController extends Controller
         $categories = Category::all();
         $locations = Location::all();
 
-        return view('government-jobs', [ // Assuming your view file is named government-jobs.blade.php
+        return view('government-jobs', [ 
             'jobs' => $jobs,
             'categories' => $categories,
             'locations' => $locations,
-            'recentArticles' => $recentArticles, // Pass recent articles to the view
+            'recentArticles' => $recentArticles, 
         ]);
     }
 
