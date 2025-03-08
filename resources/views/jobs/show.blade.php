@@ -12,11 +12,11 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-             background-color: #e8f0fe; /* Consistent background from index page */
-            color: #333; /* Consistent text color from index page */
+             background-color: #e8f0fe; 
+            color: #333; 
         }
         .navbar {
-            background-color: #1a237e; /* Deep Navy Blue Navbar */
+            background-color: #1a237e; 
         }
         .navbar .navbar-brand, .navbar-nav .nav-link {
             color: white;
@@ -27,12 +27,12 @@
             text-decoration: none;
         }
         .job-details {
-            border: none; /* Removed border */
-            padding: 30px; /* Increased padding for better spacing */
+            border: none; 
+            padding: 30px; 
             margin-bottom: 25px;
-            background-color: #fff; /* White background for job details, like job listings */
-            border-radius: 12px; /* Rounded corners like index page */
-            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15); /* Shadow from job listings */
+            background-color: #fff; 
+            border-radius: 12px; 
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15); 
         }
         .job-details img {
             max-width: 100px;
@@ -50,30 +50,30 @@
         .job-header-top {
             display: flex;
             align-items: center;
-            margin-bottom: 10px; /* Reduced margin for better spacing */
+            margin-bottom: 10px; 
         }
         .job-header-top h2 {
             margin-left: 15px;
-            color: #0d47a1; /* Job title color from index page */
-            margin-bottom: 0; /* Align with company/location text */
+            color: #0d47a1; 
+            margin-bottom: 0; 
         }
         .job-header-info p {
-            margin-bottom: 5px; /* Reduced margin for company/location text */
+            margin-bottom: 5px; 
             color: #555;
         }
         .social-sharing a {
             margin-right: 10px;
         }
-        .btn-custom, .btn-blue { /* Apply same style to both custom button and any btn-blue class */
-            background-color: #1a237e; /* Deep Navy Blue, consistent with index page buttons */
+        .btn-custom, .btn-blue { 
+            background-color: #1a237e; 
             color: white;
-             border: none; /* Removed border for button consistency */
-             padding: 10px 20px; /* Add padding to buttons */
-            border-radius: 5px; /* Add button border radius */
-            transition: background-color 0.3s ease; /* Add hover transition */
+             border: none; 
+             padding: 10px 20px; 
+            border-radius: 5px; 
+            transition: background-color 0.3s ease; 
         }
         .btn-custom:hover, .btn-blue:hover {
-            background-color: #0d1759; /* Darker blue on hover, like index page buttons */
+            background-color: #0d1759; 
         }
         .btn-custom:disabled {
             background-color: #ccc;
@@ -82,25 +82,25 @@
             margin-top: 20px;
         }
         .job-description-section h4 {
-            color: #1a237e; /* Section header color */
+            color: #1a237e; 
             margin-bottom: 10px;
             font-weight: bold;
         }
         .job-description-section p, .job-description-section li {
-            line-height: 1.7; /* Improved line height for readability */
-            margin-bottom: 10px; /* Spacing between paragraphs/list items */
-            color: #555; /* Description text color, consistent with index page */
+            line-height: 1.7; 
+            margin-bottom: 10px; 
+            color: #555; 
         }
         .job-description-section ul {
-            padding-left: 20px; /* Indentation for lists */
+            padding-left: 20px; 
         }
         .job-info p {
             margin-bottom: 8px;
-            color: #555; /* Consistent info text color */
+            color: #555; 
         }
         .job-info strong {
             font-weight: 600;
-            color: #333; /* Bold info labels */
+            color: #333; 
         }
         .bottom-nav {
             background-color: #e8f0fe;
