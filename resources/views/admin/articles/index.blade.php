@@ -241,7 +241,7 @@
                     <div class="most-read-item">
                         <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}">
                         <div>
-                            <a href="{{ route('articles.show', $article->id) }}">{{ Str::limit($article->title, 50) }}</a>
+                            <a href="{{ route('articles.show', $article->slug) }}">{{ Str::limit($article->title, 50) }}</a>
                         </div>
                     </div>
                 @endforeach

@@ -62,9 +62,10 @@ Route::get('/articles', [BlogController::class, 'index'])->name('articles.index'
 
 
 
+
 // Blog Routes
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{id}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/articles/{article:slug}', [BlogController::class, 'show'])->name('articles.show');
 Route::get('/articles', [BlogController::class, 'index'])->name('articles.index'); 
 Route::get('/articles/{id}', [BlogController::class, 'show'])->name('articles.show'); 
 

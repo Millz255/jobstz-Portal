@@ -11,8 +11,13 @@
             background-color: #e8f0fe;
             color: #333;
             font-family: 'Arial', sans-serif;
-            overflow-x: hidden; 
+            overflow-x: hidden;
         }
+
+        .navbar-collapse {
+            transition: none !important;
+        }
+
         .navbar {
             background-color: #1a237e;
         }
@@ -44,7 +49,7 @@
             color: #e0e0e0;
         }
         .container {
-            max-width: 1200px; 
+            max-width: 1200px;
             background: white;
             padding: 30px;
             border-radius: 12px;
@@ -53,24 +58,24 @@
 
         /* --- Sidebar Widget Styles --- */
         .sidebar-widget {
-            position: fixed; 
+            position: fixed;
             top: 0;
-            left: -300px; 
+            left: -300px;
             width: 300px;
             height: 100%;
             background-color: #f0f0f0;
             padding: 30px;
             box-shadow: 5px 0 20px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; 
-            transition: left 0.3s ease-in-out; 
-            z-index: 1000; 
+            overflow-y: auto;
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
         }
 
         .sidebar-widget.open {
-            left: 0; 
+            left: 0;
         }
 
-        .sidebar-widget .search-bar { 
+        .sidebar-widget .search-bar {
             margin-bottom: 20px;
             padding: 0;
             background-color: transparent;
@@ -78,13 +83,13 @@
         }
 
         .sidebar-widget .search-bar .form-control {
-            margin-bottom: 10px; 
+            margin-bottom: 10px;
             border-radius: 6px;
-            padding: 10px; 
+            padding: 10px;
         }
 
         .sidebar-widget .search-bar .btn-blue {
-            padding: 10px 15px; 
+            padding: 10px 15px;
             border-radius: 6px;
         }
 
@@ -98,7 +103,6 @@
             cursor: pointer;
             color: #555;
         }
-
 
         .job-listing {
             border: none;
@@ -175,8 +179,8 @@
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 20px; 
-            display: inline-flex; 
+            margin-bottom: 20px;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
         }
@@ -186,7 +190,7 @@
 
         /* --- Article Sidebar Styles --- */
         .article-sidebar {
-            padding-left: 30px; 
+            padding-left: 30px;
         }
 
         .article-sidebar-item {
@@ -194,7 +198,7 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
-            overflow: hidden; 
+            overflow: hidden;
         }
 
         .article-sidebar-item:hover {
@@ -204,15 +208,15 @@
         }
 
         .article-thumbnail {
-            width: 100%; 
-            max-width: 100%; 
-            max-height: 100px; 
-            height: auto; 	  
+            width: 100%;
+            max-width: 100%;
+            max-height: 100px;
+            height: auto;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
-            display: block; 
-            object-fit: cover; 
-            object-position: center; 
+            display: block;
+            object-fit: cover;
+            object-position: center;
         }
 
         .article-content {
@@ -222,10 +226,10 @@
         .article-title {
             font-size: 1rem;
             font-weight: bold;
-            color: #1a237e; 
+            color: #1a237e;
             margin-bottom: 5px;
-            display: -webkit-box; 
-            -webkit-line-clamp: 2; 
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -238,10 +242,19 @@
         }
 
         .article-link:hover {
-            color: #0d1759; 
+            color: #0d1759;
             text-decoration: underline;
         }
 
+        /* --- New CSS for Navbar Toggle --- */
+        @media (max-width: 991.98px) { /* Bootstrap's default breakpoint for `navbar-expand-lg` */
+            .navbar-collapse {
+                display: none; /* Initially hide on small screens */
+            }
+            .navbar-collapse.show { /* Class to show it (we'll add this with JS) */
+                display: block !important; /* Override any other display: none; */
+            }
+        }
 
     </style>
     <link rel="canonical" href="{{ url('/') }}">
@@ -251,7 +264,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Jobstz</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="navbarTogglerBtn">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -282,6 +295,7 @@
 </div>
 
 <div class="sidebar-widget" id="searchSidebar">  <button id="close-search-widget" onclick="toggleSearchWidget()" aria-label="Close Search Widget">&times;</button>
+    <h2>Search Here</h2>
     <div class="search-bar">
         <form method="GET" action="{{ route('jobs.index') }}" class="d-flex flex-column">
             <div class="input-group mb-2">
@@ -289,7 +303,7 @@
                 <span class="input-group-text"><i class="fas fa-search"></i></span>
             </div>
             <div class="input-group mb-2">
-                <select name="category" class="form-control" aria-label="Job Category"> <option value="">All Categories</option>
+                <select name="category" class="form-control" aria-label="Job Category"> <option value="">Select Category/Industry</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                     @endforeach
@@ -297,7 +311,7 @@
                 <span class="input-group-text"><i class="fas fa-folder"></i></span>
             </div>
             <div class="input-group mb-2">
-                <select name="location" class="form-control" aria-label="Job Location"> <option value="">All Locations</option>
+                <select name="location" class="form-control" aria-label="Job Location"> <option value="">Select Locations</option>
                     @foreach ($locations as $location)
                         <option value="{{ $location->id }}" {{ request('location') == $location->id ? 'selected' : '' }}>{{ $location->name }}</option>
                     @endforeach
@@ -330,7 +344,7 @@
                                 <p class="mb-0">
                                     <strong itemprop="name">{{ $job->company }}</strong> -  <i class="fas fa-map-marker-alt me-1"></i><span itemprop="jobLocation" itemscope itemtype="http://schema.org/Place">
                                         <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                                                <span itemprop="addressLocality">{{ optional($job->location)->name ?: 'Location not available' }}</span> </span>
+                                            <span itemprop="addressLocality">{{ optional($job->location)->name ?: 'Location not available' }}</span> </span>
                                         </span>
                                 </p>
                             </div>
@@ -392,16 +406,31 @@
                 }
             });
         });
+
+        // When the navbar toggler is clicked, ensure the search widget is closed.
+        $('.navbar-toggler').on('click', function() {
+            const sidebar = document.getElementById('searchSidebar');
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+            }
+        });
     });
 
     function toggleSearchWidget() {
         const sidebar = document.getElementById('searchSidebar');
         sidebar.classList.toggle('open');
     }
+
+    // JavaScript to manually toggle navbar collapse
+    const navbarToggler = document.getElementById('navbarTogglerBtn');
+    const navbarNav = document.getElementById('navbarNav');
+
+    navbarToggler.addEventListener('click', () => {
+        navbarNav.classList.toggle('show');
+        navbarToggler.setAttribute('aria-expanded', navbarNav.classList.contains('show'));
+    });
+
 </script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0tn9kY1wzO8O+Nf4vFLHKkBd/l6ZxDqUOEdXn7r4WR0mRp4p" crossorigin="anonymous"></script>
 
 </body>
 </html>

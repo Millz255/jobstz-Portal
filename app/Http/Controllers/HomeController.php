@@ -15,12 +15,11 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-
         $search = $request->input('search');
         $category_id = $request->input('category');
         $location_id = $request->input('location');
 
-        $jobs = Job::query()
+        $jobsQuery = Job::query() // Changed $jobs to $jobsQuery to not conflict later
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%$search%")
                     ->orWhere('description', 'like', "%$search%");
@@ -30,16 +29,15 @@ class HomeController extends Controller
             })
             ->when($location_id, function ($query) use ($location_id) {
                 $query->where('location_id', $location_id);
-            })
-            ->latest()
-            ->paginate(12);
+            });
+
+        $jobs = $jobsQuery->latest()->take(10)->get(); // Fetch only the latest 10 jobs for initial load
 
         $categories = Category::all();
         $locations = Location::all();
+        $recentArticles = Article::latest()->take(5)->get();
 
-        $recentArticles = Article::latest()->take(5)->get(); 
-
-        return view('index', compact('jobs', 'categories', 'locations', 'recentArticles')); 
+        return view('index', compact('jobs', 'categories', 'locations', 'recentArticles'));
     }
 
     public function show($slug) 
@@ -91,12 +89,21 @@ class HomeController extends Controller
     }
 
 
-    public function loadMore(Request $request)
+    public function loadMoreJobs(Request $request) // Renamed from loadMore to loadMoreJobs
     {
-        $offset = $request->input('offset', 0);
-        $jobs = Job::latest()->offset($offset)->take(12)->get();
+        $offset = $request->get('offset', 10); // Default offset to 10 if not provided
+        $jobs = Job::latest()->skip($offset)->take(10)->get(); // Fetch next 10 jobs
 
-        $view = view('jobs.list', compact('jobs'))->render();
-        return response()->json(['html' => $view]);
+        $html = '';
+        foreach ($jobs as $job) {
+            $html .= view('partials.job_listing', ['job' => $job])->render(); // Assuming you have partial
+        }
+
+        $remainingJobsCount = Job::count() - ($offset + $jobs->count()); // Calculate remaining jobs
+
+        return response()->json([
+            'html' => $html,
+            'jobs_remaining' => max(0, $remainingJobsCount), // Ensure not negative
+        ]);
     }
 }

@@ -35,6 +35,8 @@ class CategorySeeder extends Seeder
             'Media & Entertainment',
             'Agriculture',
             'Energy',
+            'Mining',
+            'Information Communication Technology',
             'Science & Research',
             'Non-Profit & NGOs',
             'Sports & Recreation'

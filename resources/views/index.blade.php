@@ -13,7 +13,7 @@
             background-color: #e8f0fe;
             color: #333;
             font-family: 'Arial', sans-serif;
-            overflow-x: hidden; 
+            overflow-x: hidden;
         }
         .navbar {
             background-color: #1a237e;
@@ -46,7 +46,7 @@
             color: #e0e0e0;
         }
         .container {
-            max-width: 1200px; 
+            max-width: 1200px;
             background: white;
             padding: 30px;
             border-radius: 12px;
@@ -55,24 +55,24 @@
 
         /* --- Sidebar Widget Styles --- */
         .sidebar-widget {
-            position: fixed; 
+            position: fixed;
             top: 0;
-            left: -300px; 
+            left: -300px;
             width: 300px;
             height: 100%;
             background-color: #f0f0f0;
             padding: 30px;
             box-shadow: 5px 0 20px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; 
-            transition: left 0.3s ease-in-out; 
-            z-index: 1000; 
+            overflow-y: auto;
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
         }
 
         .sidebar-widget.open {
-            left: 0; 
+            left: 0;
         }
 
-        .sidebar-widget .search-bar { 
+        .sidebar-widget .search-bar {
             margin-bottom: 20px;
             padding: 0;
             background-color: transparent;
@@ -80,13 +80,13 @@
         }
 
         .sidebar-widget .search-bar .form-control {
-            margin-bottom: 10px; 
+            margin-bottom: 10px;
             border-radius: 6px;
-            padding: 10px; 
+            padding: 10px;
         }
 
         .sidebar-widget .search-bar .btn-blue {
-            padding: 10px 15px; 
+            padding: 10px 15px;
             border-radius: 6px;
         }
 
@@ -177,8 +177,8 @@
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 20px; 
-            display: inline-flex; 
+            margin-bottom: 20px;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
         }
@@ -187,8 +187,8 @@
         }
 
         /* --- Article Sidebar Styles --- */
-            .article-sidebar {
-            padding-left: 30px; 
+        .article-sidebar {
+            padding-left: 30px;
         }
 
         .article-sidebar-item {
@@ -196,7 +196,7 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
-            overflow: hidden; 
+            overflow: hidden;
         }
 
         .article-sidebar-item:hover {
@@ -206,14 +206,14 @@
         }
 
         .article-thumbnail {
-            width: 100%; 
-            max-width: 100%; 
-            max-height: 100px; 
-            height: auto;   
+            width: 100%;
+            max-width: 100%;
+            max-height: 100px;
+            height: auto;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
-            display: block; 
-            object-fit: cover; 
+            display: block;
+            object-fit: cover;
             object-position: center;
         }
 
@@ -244,6 +244,16 @@
             text-decoration: underline;
         }
 
+        /* --- New CSS for Navbar Toggle --- */
+        @media (max-width: 991.98px) { /* Bootstrap's default breakpoint for `navbar-expand-lg` */
+            .navbar-collapse {
+                display: none; /* Initially hide on small screens */
+            }
+            .navbar-collapse.show { /* Class to show it (we'll add this with JS) */
+                display: block !important; /* Override any other display: none; */
+            }
+        }
+
     </style>
     <link rel="canonical" href="{{ url('/') }}">
 </head>
@@ -252,7 +262,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Jobstz</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="navbarTogglerBtn">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -331,8 +341,8 @@
                                 <p class="mb-0">
                                     <strong itemprop="name">{{ $job->company }}</strong> -  <i class="fas fa-map-marker-alt me-1"></i><span itemprop="jobLocation" itemscope itemtype="http://schema.org/Place">
                                         <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                                             <span itemprop="addressLocality">{{ optional($job->location)->name ?: 'Location not available' }}</span> </span>
-                                    </span>
+                                            <span itemprop="addressLocality">{{ optional($job->location)->name ?: 'Location not available' }}</span> </span>
+                                        </span>
                                 </p>
                             </div>
                         </div>
@@ -343,9 +353,7 @@
             </div>
 
             <div id="load-more" class="text-center mt-5">
-                @if (count($jobs) >= 12)
-                    <button class="btn btn-blue" id="load-more-button">Load More Jobs</button>
-                @endif
+                <button class="btn btn-blue" id="load-more-button">Load More Jobs</button>
             </div>
         </div>
 
@@ -353,14 +361,14 @@
             <h3 class="mb-3">Recent Articles</h3>
             @foreach($recentArticles as $article)
             <div class="article-sidebar-item">
-                <a href="{{ route('articles.show', $article->id) }}" style="display: block; text-decoration: none; color: inherit;">
+                <a href="{{ route('articles.show', $article->slug) }}" style="display: block; text-decoration: none; color: inherit;">
                     <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }} Thumbnail" class="article-thumbnail">
                     <div class="article-content">
                         <h4 class="article-title">{{ $article->title }}</h4>
                     </div>
                 </a>
                 <div class="article-content" style="padding-top: 0;">
-                    <a href="{{ route('articles.show', $article->id) }}" class="btn btn-blue btn-sm">Read More <i class="fas fa-arrow-right"></i></a>
+                    <a href="{{ route('articles.show', $article->slug) }}" class="btn btn-blue btn-sm">Read More <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
             @endforeach
@@ -399,10 +407,17 @@
         const sidebar = document.getElementById('searchSidebar');
         sidebar.classList.toggle('open');
     }
+
+    // JavaScript to manually toggle navbar collapse
+    const navbarToggler = document.getElementById('navbarTogglerBtn');
+    const navbarNav = document.getElementById('navbarNav');
+
+    navbarToggler.addEventListener('click', () => {
+        navbarNav.classList.toggle('show');
+        navbarToggler.setAttribute('aria-expanded', navbarNav.classList.contains('show'));
+    });
+
 </script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0tn9kY1wzO8O+Nf4vFLHKkBd/l6ZxDqUOEdXn7r4WR0mRp4p" crossorigin="anonymous"></script>
 
 </body>
 </html>

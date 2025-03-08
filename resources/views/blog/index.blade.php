@@ -64,53 +64,53 @@
             margin-bottom: 20px;
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            display: flex; 
-            align-items: flex-start; 
+            display: flex;
+            align-items: flex-start;
         }
         .article-card:hover {
             transform: translateY(-3px);
             box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
         }
         .article-card .article-image-container {
-            flex-shrink: 0; 
+            flex-shrink: 0;
             margin-right: 15px;
-            width: 100px;      
-            height: 80px;     
+            width: 100px;
+            height: 80px;
             overflow: hidden;
-            border-radius: 6px; 
+            border-radius: 6px;
         }
         .article-card .article-image-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 6px; 
+            border-radius: 6px;
             display: block;
         }
         .article-card .article-content {
             flex-grow: 1;
         }
         .article-card h3 {
-            font-size: 1.1rem; 
+            font-size: 1.1rem;
             margin-top: 0;
-            margin-bottom: 3px; 
+            margin-bottom: 3px;
             color: #0d47a1;
-            line-height: 1.2;  
+            line-height: 1.2;
         }
         .article-card p {
-            font-size: 0.85rem; 
-            color: #666;      
-            margin-bottom: 5px; 
-            line-height: 1.3;  
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+            line-height: 1.3;
         }
         .article-card .author {
-            font-weight: normal; 
-            font-size: 0.8rem;  
-            color: #777;      
+            font-weight: normal;
+            font-size: 0.8rem;
+            color: #777;
             margin-bottom: 0;
         }
-        .article-card .btn-primary { 
-            padding: 0.5rem 1rem; 
-            font-size: 0.85rem;  
+        .article-card .btn-primary {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
         }
 
 
@@ -135,14 +135,14 @@
             margin-bottom: 15px;
         }
         .most-read-item img {
-            width: 50px;      
-            height: 50px;     
-            border-radius: 5px;  
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
             object-fit: cover;
         }
         .most-read-item a {
-            font-size: 0.9rem;  
-            font-weight: normal; 
+            font-size: 0.9rem;
+            font-weight: normal;
             text-decoration: none;
             color: #0d47a1;
         }
@@ -184,9 +184,19 @@
             }
             .article-card .article-image-container {
                 width: 100%;
-                height: 150px;     
+                height: 150px;
                 margin-bottom: 10px;
                 margin-right: 0;
+            }
+        }
+
+        /* --- New CSS for Navbar Toggle --- */
+        @media (max-width: 991.98px) { /* Bootstrap's default breakpoint for `navbar-expand-lg` */
+            .navbar-collapse {
+                display: none; /* Initially hide on small screens */
+            }
+            .navbar-collapse.show { /* Class to show it (we'll add this with JS) */
+                display: block !important; /* Override any other display: none; */
             }
         }
     </style>
@@ -196,7 +206,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('jobs.index') }}">Jobstz</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" id="navbarTogglerBtn">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -228,7 +238,7 @@
                         <h3>{{ $article->title }}</h3>
                         <p>{{ Str::limit($article->content, 150) }}</p>
                         <p class="author">By {{ $article->author }}</p>
-                        <a href="{{ route('blog.show', $article->id) }}" class="btn btn-primary">Read More</a>
+                        <a href="{{ route('articles.show', $article->slug) }}" class="btn btn-primary">Read More</a>
                     </div>
                 </div>
             @endforeach
@@ -241,7 +251,7 @@
                     <div class="most-read-item">
                         <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }}">
                         <div>
-                            <a href="{{ route('articles.show', $article->id) }}">{{ Str::limit($article->title, 50) }}</a>
+                            <a href="{{ route('articles.show', $article->slug) }}">{{ Str::limit($article->title, 50) }}</a>
                         </div>
                     </div>
                 @endforeach
@@ -257,6 +267,16 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // JavaScript to manually toggle navbar collapse
+    const navbarToggler = document.getElementById('navbarTogglerBtn');
+    const navbarNav = document.getElementById('navbarNav');
+
+    navbarToggler.addEventListener('click', () => {
+        navbarNav.classList.toggle('show');
+        navbarToggler.setAttribute('aria-expanded', navbarNav.classList.contains('show'));
+    });
+</script>
 
 </body>
 </html>
