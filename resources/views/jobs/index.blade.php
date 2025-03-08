@@ -276,7 +276,7 @@
 </nav>
 
 <div class="hero-section">
-    <h1 class="hero-title">Find Your Dream Job with Jobstz</h1>
+    <h1 class="hero-title">Find Your Dream Job, Remote Jobs & other Opportunities on Jobstz</h1>
     <p class="hero-slogan">Your Career, Your Future starts here.</p>
 </div>
 
@@ -329,7 +329,7 @@
                             </div>
                         </div>
                         <p class="mb-3">{{ Str::limit($job->description, 150) }}</p>
-                        <a href="{{ route('jobs.show', [$job->slug, $job->id]) }}" class="btn btn-blue">View Details</a> {{-- CORRECTED LINE HERE --}}
+                        <a href="{{ route('jobs.show', [$job->slug, $job->id]) }}" class="btn btn-blue">View Details</a>
                     </div>
                 @endforeach
             </div>

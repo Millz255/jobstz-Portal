@@ -278,7 +278,7 @@
 </nav>
 
 <div class="hero-section">
-    <h1 class="hero-title">Find Remote Jobs, Tech Careers & Government Opportunities on Jobstz</h1>
+    <h1 class="hero-title">Find Your Dream Job, Remote Jobs & other Opportunities on Jobstz</h1>
     <p class="hero-slogan">Start Your Job Search Today and Build Your Future with Leading Employers.</p>
 </div>
 
