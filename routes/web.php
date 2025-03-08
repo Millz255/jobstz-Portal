@@ -36,11 +36,11 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/jobs/{id}/edit', [JobController::class, 'edit'])->name('admin.jobs.edit');
     Route::put('/jobs/{id}', [JobController::class, 'update'])->name('admin.jobs.update');
     Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('admin.jobs.destroy');
-    Route::post('/jobs/{id}/mark-expired', [JobController::class, 'markExpired'])->name('admin.jobs.markExpired'); // **Moved to Admin routes**
+    Route::post('/jobs/{id}/mark-expired', [JobController::class, 'markExpired'])->name('admin.jobs.markExpired');
 
 
     // Admin Article Management Routes
-    Route::get('/articles', [ArticleController::class, 'index'])->name('admin.articles.index');  // Add this route
+    Route::get('/articles', [ArticleController::class, 'index'])->name('admin.articles.index');
     Route::get('/articles/create', [ArticleController::class, 'create'])->name('admin.articles.create');
     Route::post('/articles', [ArticleController::class, 'store'])->name('admin.articles.store');
     Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('admin.articles.edit');
@@ -56,7 +56,6 @@ Route::get('/search', [HomeController::class, 'search'])->name('jobs.search');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'submitContactForm'])->name('contact.submit');
 Route::get('/government-jobs', [JobController::class, 'governmentJobs'])->name('government.jobs');
-Route::post('/jobs/{id}/mark-expired', [JobController::class, 'markExpired'])->name('admin.jobs.markExpired');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 Route::get('/articles', [BlogController::class, 'index'])->name('articles.index');
 

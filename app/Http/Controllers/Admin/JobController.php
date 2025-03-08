@@ -129,15 +129,15 @@ class JobController extends Controller
         return redirect('/admin/jobs')->with('success', 'Job deleted successfully!');
     }
 
-        public function markExpired($id)
+    public function markExpired($id)
     {
         // Find the job by ID
         $job = Job::findOrFail($id);
-
+    
         // Mark the job as expired (adjust according to your database schema)
         $job->status = 'expired'; // or whatever your status field is for expired jobs
         $job->save();
-
+    
         // Redirect back with a success message
         return redirect()->route('admin.jobs.index')->with('success', 'Job marked as expired!');
     }

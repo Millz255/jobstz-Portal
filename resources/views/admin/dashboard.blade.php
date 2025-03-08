@@ -469,9 +469,8 @@
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm" title="Delete Job"><i class="fas fa-trash-alt"></i></button>
                                     </form>
-                                    <form action="{{ route('admin.jobs.markExpired', $job->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.jobs.markExpired', $job->id) }}" method="POST" class="d-inline">
                                         @csrf
-                                        @method('DELETE')
                                         <button type="submit" class="btn btn-secondary btn-sm" title="Mark as Expired"><i class="fas fa-ban"></i></button>
                                     </form>
                                 </td>
