@@ -48,7 +48,7 @@ class HomeController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // --- Fetch related jobs from the same category ---
+        
         $relatedJobs = Job::where('category_id', $job->category_id)
             ->where('id', '!=', $job->id) 
             ->latest()
@@ -77,7 +77,7 @@ class HomeController extends Controller
         
         ContactMessage::create($validatedData);
     
-        // 3. Send email notification
+        
         $adminEmail = 'mgimwaemily@gmail.com';
         Mail::to($adminEmail)->send(new ContactFormSubmitted($validatedData));
     
