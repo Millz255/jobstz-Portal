@@ -175,8 +175,8 @@
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 20px; /* Add margin to separate from listings */
-            display: inline-flex; /* Align icon and text */
+            margin-bottom: 20px; 
+            display: inline-flex; 
             align-items: center;
             gap: 8px;
         }
@@ -186,7 +186,7 @@
 
         /* --- Article Sidebar Styles --- */
         .article-sidebar {
-            padding-left: 30px; /* Spacing from job listings */
+            padding-left: 30px; 
         }
 
         .article-sidebar-item {
@@ -194,7 +194,7 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
-            overflow: hidden; /* Ensure image doesn't overflow rounded corners */
+            overflow: hidden; 
         }
 
         .article-sidebar-item:hover {
@@ -204,15 +204,15 @@
         }
 
         .article-thumbnail {
-            width: 100%; /* Keep width 100% to fit inside .article-sidebar-item */
-            max-width: 100%; /* Ensure image doesn't exceed container width */
-            max-height: 100px; /* Limit max height for thumbnail effect */
-            height: auto; 	  /* Maintain aspect ratio */
+            width: 100%; 
+            max-width: 100%; 
+            max-height: 100px; 
+            height: auto; 	  
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
-            display: block; /* Prevent bottom margin from image */
-            object-fit: cover; /* added to maintain aspect ratio and cover the area */
-            object-position: center; /* added to center the image within its container */
+            display: block; 
+            object-fit: cover; 
+            object-position: center; 
         }
 
         .article-content {
@@ -222,10 +222,10 @@
         .article-title {
             font-size: 1rem;
             font-weight: bold;
-            color: #1a237e; /* Match button color for emphasis */
+            color: #1a237e; 
             margin-bottom: 5px;
-            display: -webkit-box; /* For modern browsers */
-            -webkit-line-clamp: 2; /* Limit to two lines */
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -238,7 +238,7 @@
         }
 
         .article-link:hover {
-            color: #0d1759; /* Darker blue on hover */
+            color: #0d1759; 
             text-decoration: underline;
         }
 
