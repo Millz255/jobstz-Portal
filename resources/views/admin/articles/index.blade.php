@@ -228,7 +228,7 @@
                         <h3>{{ $article->title }}</h3>
                         <p>{{ Str::limit($article->content, 150) }}</p>
                         <p class="author">By {{ $article->author }}</p>
-                        <a href="{{ route('blog.show', $article->id) }}" class="btn btn-primary">Read More</a>
+                        <a href="{{ route('articles.show', ['article' => $article->slug]) }}">View Article</a>
                     </div>
                 </div>
             @endforeach

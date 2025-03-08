@@ -373,7 +373,7 @@
                     </div>
                 </a>
                 <div class="article-content" style="padding-top: 0;">
-                    <a href="{{ route('articles.show', $article->id) }}" class="btn btn-blue btn-sm">Read More <i class="fas fa-arrow-right"></i></a>
+                    <a href="{{ route('articles.show', $article->slug) }}" class="btn btn-blue btn-sm">Read More <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
             @endforeach

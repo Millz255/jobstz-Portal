@@ -124,6 +124,25 @@
             text-decoration: underline;
         }
 
+        /* Video Embed Styling */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio (9 / 16 * 100) */
+            padding-top: 25px;
+            height: 0;
+            overflow: hidden;
+            margin-bottom: 20px; /* Space below video */
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+
         /* Responsive adjustments for smaller screens */
         @media (max-width: 768px) {
             .article-details {
@@ -172,7 +191,7 @@
 
 <div class="container mt-4">
     <div class="article-details">
-        <div class="article-image-column"> {{-- NEW IMAGE COLUMN CONTAINER --}}
+        <div class="article-image-column">
             @if($article->image)
                 <div class="image-container">
                     <a href="{{ asset('storage/' . $article->image) }}" data-glightbox="type: image">
@@ -183,9 +202,66 @@
                     </a>
                 </div>
             @endif
+
+            {{-- **Video Embedding Section - ADDED HERE - RECTIFIED SNIPPET WITH TIKTOK & INSTAGRAM SUPPORT** --}}
+            @if($article->video_url)
+                <div class="video-container">
+                    @php
+                        $videoUrl = $article->video_url;
+                        $videoEmbedUrl = '';
+
+                        // YouTube URL Handling (for both www.youtube.com and youtu.be)
+                        if (strpos($videoUrl, 'youtube.com') !== false || strpos($videoUrl, 'youtu.be') !== false) {
+                            if (strpos($videoUrl, 'youtube.com') !== false) {
+                                // Extract video ID from www.youtube.com/watch?v=VIDEO_ID URLs
+                                parse_str(parse_url($videoUrl, PHP_URL_QUERY), $queryParams);
+                                if (isset($queryParams['v'])) {
+                                    $videoEmbedUrl = 'https://www.youtube.com/embed/' . $queryParams['v'];
+                                }
+                            } elseif (strpos($videoUrl, 'youtu.be') !== false) {
+                                // Extract video ID from youtu.be/VIDEO_ID URLs
+                                $videoPath = parse_url($videoUrl, PHP_URL_PATH);
+                                $videoId = trim($videoPath, '/');
+                                $videoEmbedUrl = 'https://www.youtube.com/embed/' . $videoId;
+                            }
+                        }
+                        // TikTok URL Handling (for www.tiktok.com)
+                        elseif (strpos($videoUrl, 'tiktok.com') !== false) {
+                            // Example TikTok URL: https://www.tiktok.com/@username/video/VIDEO_ID
+                            $videoPath = parse_url($videoUrl, PHP_URL_PATH);
+                            $pathParts = explode('/', trim($videoPath, '/'));
+                            if (count($pathParts) >= 3 && $pathParts[1] === 'video') {
+                                $videoId = $pathParts[2];
+                                $videoEmbedUrl = 'https://www.tiktok.com/embed/v2/' . $videoId; // TikTok Embed URL format
+                            }
+                        }
+                        // Instagram URL Handling (for www.instagram.com)
+                        elseif (strpos($videoUrl, 'instagram.com') !== false) {
+                            // Instagram post URLs are typically like: https://www.instagram.com/p/POST_ID/
+                            $videoEmbedUrl = $videoUrl . "embed/"; // Simple Instagram Embed URL - just append "embed/"
+                        }
+                        else {
+                            // For other video platforms (like Vimeo, direct embed URLs) or if detection fails - use as is
+                            $videoEmbedUrl = $videoUrl;
+                        }
+                    @endphp
+                    @if($videoEmbedUrl) {{-- Embed only if we have a valid embed URL --}}
+                        <iframe
+                            width="560"
+                            height="315"
+                            src="{{ $videoEmbedUrl }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    @endif
+                </div>
+            @endif
+
+
         </div>
 
-        <div class="article-content-column"> {{-- NEW CONTENT COLUMN CONTAINER --}}
+        <div class="article-content-column">
             <div class="article-header">
                 <h2>{{ $article->title }}</h2>
                 <div class="article-meta">

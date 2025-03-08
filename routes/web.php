@@ -67,7 +67,7 @@ Route::get('/articles', [BlogController::class, 'index'])->name('articles.index'
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/articles/{article:slug}', [BlogController::class, 'show'])->name('articles.show');
 Route::get('/articles', [BlogController::class, 'index'])->name('articles.index'); 
-Route::get('/articles/{id}', [BlogController::class, 'show'])->name('articles.show'); 
+// Route::get('/articles/{id}', [BlogController::class, 'show'])->name('articles.show'); 
 
 
 // Auth Routes
