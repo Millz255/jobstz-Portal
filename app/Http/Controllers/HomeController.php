@@ -37,12 +37,12 @@ class HomeController extends Controller
         $categories = Category::all();
         $locations = Location::all();
 
-        $recentArticles = Article::latest()->take(5)->get(); // <---- Fetch recent articles**
+        $recentArticles = Article::latest()->take(5)->get(); 
 
-        return view('index', compact('jobs', 'categories', 'locations', 'recentArticles')); // <---- Pass articles here
+        return view('index', compact('jobs', 'categories', 'locations', 'recentArticles')); 
     }
 
-    public function show($slug) // Keep using slug as route parameter (as per our earlier fix)
+    public function show($slug) 
     {
         $job = Job::with(['category', 'location'])
             ->where('slug', $slug)
@@ -50,13 +50,13 @@ class HomeController extends Controller
 
         // --- Fetch related jobs from the same category ---
         $relatedJobs = Job::where('category_id', $job->category_id)
-            ->where('id', '!=', $job->id) // Exclude the current job
+            ->where('id', '!=', $job->id) 
             ->latest()
-            ->take(5) // Limit to a reasonable number of related jobs (e.g., 5)
+            ->take(5)
             ->get();
-        // --- End related jobs logic ---
+  
 
-        return view('jobs.show', compact('job', 'relatedJobs')); // Pass $relatedJobs to the view
+        return view('jobs.show', compact('job', 'relatedJobs')); 
     }
 
     public function about()
