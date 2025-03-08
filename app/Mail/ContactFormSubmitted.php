@@ -13,12 +13,12 @@ class ContactFormSubmitted extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $contactData; // **Declare a public property to hold the data**
+    public $contactData; // 
 
     /**
      * Create a new message instance.
      *
-     * @param array $contactData // **Accept an array of contact data in the constructor**
+     * @param array $contactData
      * @return void
      */
     public function __construct(array $contactData)
@@ -32,7 +32,7 @@ class ContactFormSubmitted extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Contact Form Submission from Jobstz Website', // More informative subject
+            subject: 'New Contact Form Submission from Jobstz Website', 
         );
     }
 
@@ -47,7 +47,7 @@ class ContactFormSubmitted extends Mailable
                 'name' => $this->contactData['name'],
                 'email' => $this->contactData['email'],
                 'subject' => $this->contactData['subject'],
-                'contactMessage' => $this->contactData['message'], // Renamed
+                'contactMessage' => $this->contactData['message'],
             ],
         );
     }
