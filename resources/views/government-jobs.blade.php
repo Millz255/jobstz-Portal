@@ -11,7 +11,7 @@
             background-color: #e8f0fe;
             color: #333;
             font-family: 'Arial', sans-serif;
-            overflow-x: hidden; /* Prevent horizontal scrollbar */
+            overflow-x: hidden; 
         }
         .navbar {
             background-color: #1a237e;
@@ -44,7 +44,7 @@
             color: #e0e0e0;
         }
         .container {
-            max-width: 1200px; /* Increased container width to accommodate sidebar */
+            max-width: 1200px; 
             background: white;
             padding: 30px;
             border-radius: 12px;
@@ -53,24 +53,24 @@
 
         /* --- Sidebar Widget Styles --- */
         .sidebar-widget {
-            position: fixed; /* Fixed sidebar */
+            position: fixed; 
             top: 0;
-            left: -300px; /* Initially hidden off-screen */
+            left: -300px; 
             width: 300px;
             height: 100%;
             background-color: #f0f0f0;
             padding: 30px;
             box-shadow: 5px 0 20px rgba(0, 0, 0, 0.1);
-            overflow-y: auto; /* In case search form is long */
-            transition: left 0.3s ease-in-out; /* Slide-in animation */
-            z-index: 1000; /* Ensure it's on top of other content */
+            overflow-y: auto; 
+            transition: left 0.3s ease-in-out; 
+            z-index: 1000; 
         }
 
         .sidebar-widget.open {
-            left: 0; /* Slide in to view */
+            left: 0; 
         }
 
-        .sidebar-widget .search-bar { /* Reset search bar styles inside sidebar */
+        .sidebar-widget .search-bar { 
             margin-bottom: 20px;
             padding: 0;
             background-color: transparent;
@@ -78,13 +78,13 @@
         }
 
         .sidebar-widget .search-bar .form-control {
-            margin-bottom: 10px; /* Reduced margin */
+            margin-bottom: 10px; 
             border-radius: 6px;
-            padding: 10px; /* Reduced padding */
+            padding: 10px; 
         }
 
         .sidebar-widget .search-bar .btn-blue {
-            padding: 10px 15px; /* Reduced button padding */
+            padding: 10px 15px; 
             border-radius: 6px;
         }
 
@@ -175,8 +175,8 @@
             padding: 10px 15px;
             border-radius: 5px;
             cursor: pointer;
-            margin-bottom: 20px; /* Add margin to separate from listings */
-            display: inline-flex; /* Align icon and text */
+            margin-bottom: 20px; 
+            display: inline-flex; 
             align-items: center;
             gap: 8px;
         }
@@ -186,7 +186,7 @@
 
         /* --- Article Sidebar Styles --- */
         .article-sidebar {
-            padding-left: 30px; /* Spacing from job listings */
+            padding-left: 30px; 
         }
 
         .article-sidebar-item {
@@ -194,7 +194,7 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
-            overflow: hidden; /* Ensure image doesn't overflow rounded corners */
+            overflow: hidden; 
         }
 
         .article-sidebar-item:hover {
@@ -204,15 +204,15 @@
         }
 
         .article-thumbnail {
-            width: 100%; /* Keep width 100% to fit inside .article-sidebar-item */
-            max-width: 100%; /* Ensure image doesn't exceed container width */
-            max-height: 100px; /* Limit max height for thumbnail effect */
-            height: auto; 	  /* Maintain aspect ratio */
+            width: 100%; 
+            max-width: 100%; 
+            max-height: 100px; 
+            height: auto; 	  
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
-            display: block; /* Prevent bottom margin from image */
-            object-fit: cover; /* added to maintain aspect ratio and cover the area */
-            object-position: center; /* added to center the image within its container */
+            display: block; 
+            object-fit: cover; 
+            object-position: center; 
         }
 
         .article-content {
@@ -222,10 +222,10 @@
         .article-title {
             font-size: 1rem;
             font-weight: bold;
-            color: #1a237e; /* Match button color for emphasis */
+            color: #1a237e; 
             margin-bottom: 5px;
-            display: -webkit-box; /* For modern browsers */
-            -webkit-line-clamp: 2; /* Limit to two lines */
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -238,7 +238,7 @@
         }
 
         .article-link:hover {
-            color: #0d1759; /* Darker blue on hover */
+            color: #0d1759; 
             text-decoration: underline;
         }
 
