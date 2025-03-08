@@ -10,7 +10,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        // Display all categories
+        
         $categories = Category::all();
         return view('admin.categories.index', compact('categories'));
     }
@@ -22,12 +22,12 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the incoming data
+        
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name',  // Ensure uniqueness
+            'name' => 'required|string|max:255|unique:categories,name',  
         ]);
 
-        // Create the category
+        
         Category::create($validatedData);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category created successfully!');
@@ -35,19 +35,19 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        // Edit category
+        
         $category = Category::findOrFail($id);
         return view('admin.categories.edit', compact('category'));
     }
 
     public function update(Request $request, $id)
     {
-        // Validate the incoming data
+        
         $validatedData = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $id,  // Ensure uniqueness except for the current category
+            'name' => 'required|string|max:255|unique:categories,name,' . $id,  
         ]);
 
-        // Update the category
+        
         Category::where('id', $id)->update($validatedData);
 
         return redirect()->route('admin.categories.index')->with('success', 'Category updated successfully!');
@@ -55,7 +55,7 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        // Delete category
+        
         Category::destroy($id);
         return redirect()->route('admin.categories.index')->with('success', 'Category deleted successfully!');
     }
