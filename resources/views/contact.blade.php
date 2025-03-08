@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
-            background-color: #e8f0fe; /* Very light blue background */
+            background-color: #e8f0fe; 
             color: #333;
             font-family: 'Arial', sans-serif;
         }
         .navbar {
-            background-color: #1a237e; /* Deep Navy Blue Navbar */
+            background-color: #1a237e; 
         }
         .navbar .navbar-brand, .navbar-nav .nav-link {
             color: white;
@@ -24,7 +24,7 @@
             text-decoration: none;
         }
         .hero-section {
-            background: linear-gradient(135deg, #1a237e, #7986cb); /* Deep Blue Gradient Hero */
+            background: linear-gradient(135deg, #1a237e, #7986cb); 
             color: white;
             padding: 80px 0;
             text-align: center;
