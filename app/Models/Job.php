@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Location;
-use Illuminate\Support\Str; // Import the Str class
+use Illuminate\Support\Str; 
 
 class Job extends Model
 {
@@ -63,11 +63,11 @@ class Job extends Model
         parent::boot();
 
         static::creating(function ($job) {
-            $job->slug = Str::slug($job->title) . '-' . uniqid(); // Generate slug on creating
+            $job->slug = Str::slug($job->title) . '-' . uniqid(); 
         });
 
         static::updating(function ($job) {
-            $job->slug = Str::slug($job->title) . '-' . $job->id; // Regenerate slug on updating
+            $job->slug = Str::slug($job->title) . '-' . $job->id; 
         });
     }
 }
