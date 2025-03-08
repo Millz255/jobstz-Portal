@@ -37,6 +37,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/jobs/{id}', [JobController::class, 'update'])->name('admin.jobs.update');
     Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('admin.jobs.destroy');
     Route::post('/jobs/{id}/mark-expired', [JobController::class, 'markExpired'])->name('admin.jobs.markExpired');
+    Route::post('/test-mark-expired/{job}', [\App\Http\Controllers\Admin\JobController::class, 'testMarkExpired'])->name('admin.jobs.testMarkExpired');
 
 
     // Admin Article Management Routes
@@ -51,7 +52,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('jobs.index');
 Route::get('/jobs/load-more', [HomeController::class, 'loadMore'])->name('jobs.loadMore');
-Route::get('/jobs/{id}', [HomeController::class, 'show'])->name('jobs.show');
+Route::get('/jobs/{slug}', [HomeController::class, 'show'])->name('jobs.show');
 Route::get('/search', [HomeController::class, 'search'])->name('jobs.search');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::post('/contact', [HomeController::class, 'submitContactForm'])->name('contact.submit');

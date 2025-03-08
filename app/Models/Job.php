@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Location;
+use Illuminate\Support\Str; // Import the Str class
 
 class Job extends Model
 {
@@ -22,6 +23,7 @@ class Job extends Model
         'is_expired',
         'application_link',
         'pdf_path',
+        'slug',
     ];
 
     /**
@@ -56,6 +58,16 @@ class Job extends Model
         return now()->diffInDays($this->deadline, false) <= 3 && !$this->expired;
     }
 
-    // Remove the duplicate location() method 
-    // Remove the jobs() method (it should be in the Location model)
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($job) {
+            $job->slug = Str::slug($job->title) . '-' . uniqid(); // Generate slug on creating
+        });
+
+        static::updating(function ($job) {
+            $job->slug = Str::slug($job->title) . '-' . $job->id; // Regenerate slug on updating
+        });
+    }
 }

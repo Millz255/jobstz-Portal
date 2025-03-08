@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Details</title>
+    <title>{{ $job->title }} at {{ $job->company }} - Jobstz</title>
+    <meta name="description" content="Apply for the {{ $job->title }} position at {{ $job->company }} in {{ optional($job->location)->name ?: 'Various Locations' }}. Find job details, description, company information and application link at Jobstz.">
+    <meta name="keywords" content="{{ $job->title }}, {{ $job->company }}, {{ optional($job->location)->name }}, {{ $job->job_type }}, {{ $job->employment_type }}, jobs, job search, career">
+    <link rel="canonical" href="{{ route('jobs.show', $job->id) }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -141,7 +144,7 @@
                     <a class="nav-link" href="{{ route('articles.index') }}">Blog</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('contact') }}">Advertisem With Us</a>
+                    <a class="nav-link" href="{{ route('contact') }}">Advertise With Us</a>
                 </li>
             </ul>
         </div>
@@ -149,64 +152,95 @@
 </nav>
 
 <div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8"> {{-- Main Job Details Column (8 columns wide) --}}
+            <div class="job-details" itemscope itemtype="http://schema.org/JobPosting">
+                <meta itemprop="hiringOrganization" content="{{ $job->company }}">
+                <meta itemprop="jobLocationType" content="{{ $job->job_type }}">
+                <meta itemprop="employmentType" content="{{ $job->employment_type }}">
+                <meta itemprop="datePosted" content="{{ $job->created_at->toIso8601String() }}">
+                <meta itemprop="validThrough" content="{{ optional($job->expiry_date)->toIso8601String() }}">
+
+                <div class="job-header">
+                    <div class="job-header-top">
+                        <img src="{{ asset('storage/' . $job->company_logo) }}" alt="{{ $job->company }} logo" class="me-3" style="max-width: 80px;" itemprop="image">
+                        <h1 class="mb-0" itemprop="title">{{ $job->title }}</h1>
+                    </div>
+                    <div class="job-header-info">
+                        <p class="mb-0"><strong>Company:</strong> <span itemprop="name">{{ $job->company }}</span></p>
+                        <p class="mb-0"><strong>Location:</strong> <span itemprop="jobLocation" itemscope itemtype="http://schema.org/Place">
+                            <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                               <span itemprop="addressLocality">{{ optional($job->location)->name ?: 'Location not available' }}</span> </span>
+                        </span></p>
+                    </div>
+                </div>
+
+                @if (!$job->is_expired && $job->application_link)
+                    <a href="{{ $job->application_link }}" class="btn btn-custom apply-button" target="_blank" rel="noopener noreferrer">Apply Now</a>
+                @elseif (!$job->is_expired)
+                    <button class="btn btn-custom apply-button" disabled>Apply Now (Link Not Provided)</button>
+                @else
+                    <button class="btn btn-custom apply-button" disabled>Expired</button>
+                @endif
+
+                <div class="job-description-section">
+                    <h4>Job Description</h4>
+                    <div itemprop="description">{!! nl2br(e($job->description)) !!}</div>
+                </div>
+
+                @if($job->pdf_path)
+                    <div class="mb-3">
+                        <p>
+                            <strong>Job Description (PDF):</strong>
+                            <a href="{{ asset('storage/' . $job->pdf_path) }}" target="_blank">Download PDF</a>
+                        </p>
+                    </div>
+                @endif
+
+                <div class="job-info" style="margin-top: 20px;">
+                    <p><strong>Deadline:</strong> {{ \Carbon\Carbon::parse($job->deadline)->format('F d, Y') }}</p>
+                </div>
+
+                @if ($job->is_expired)
+                    <p class="expired">This job has expired.</p>
+                @endif
+                 <link itemprop="url" href="{{ route('jobs.show', ['slug' => $job->slug]) }}"> {{-- Updated route here --}}
+            </div>
+
+            <div class="social-sharing">
+                <p><strong>Share this job:</strong></p>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="fab fa-facebook"></i> Facebook</a>
+                <a href="https://twitter.com/share?url={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+                <a href="https://www.linkedin.com/shareArticle?url={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://wa.me/?text={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="https://t.me/share/url?url={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer" aria-label="Share on Telegram"><i class="fab fa-telegram"></i> Telegram</a>
+            </div>
+        </div>
+
+        <div class="col-md-4"> {{-- Related Jobs Section --}}
     <div class="job-details">
-        <div class="job-header">
-            <div class="job-header-top">
-            <img src="{{ asset('storage/' . $job->company_logo) }}" alt="{{ $job->company }} logo" class="me-3" style="max-width: 80px;">
-                <h2 class="mb-0">{{ $job->title }}</h2>
+        <h4>Related Jobs</h4>
+        @forelse ($relatedJobs as $relatedJob)
+            <div style="display: flex; align-items: center; margin-bottom: 15px;"> {{-- Added flex container --}}
+                <img src="{{ asset('storage/' . $relatedJob->company_logo) }}" alt="{{ $relatedJob->company }} logo" style="max-width: 50px; max-height: 50px; margin-right: 10px; border-radius: 5px;"> {{-- Added image tag --}}
+                <div>
+                    <a href="{{ route('jobs.show', ['slug' => $relatedJob->slug]) }}" style="display: block; color: #0d47a1; font-weight: 500; text-decoration: none;">{{ $relatedJob->title }}</a>
+                    <p style="font-size: 0.9em; color: #777; margin-bottom: 0;">{{ $relatedJob->company }}</p> {{-- Optional: Add company name below title --}}
+                </div>
             </div>
-            <div class="job-header-info"> {{-- New div for company and location info in header --}}
-                <p class="mb-0"><strong>Company:</strong> {{ $job->company }}</p>
-                <p class="mb-0"><strong>Location:</strong> {{ optional($job->location)->name ?: 'Location not available' }}</p>
-            </div>
-        </div>
-
-        @if (!$job->is_expired && $job->application_link)
-            <a href="{{ $job->application_link }}" class="btn btn-custom" target="_blank">Apply Now</a>
-        @elseif (!$job->is_expired)
-            <button class="btn btn-custom" disabled>Apply Now (Link Not Provided)</button>
-        @else
-            <button class="btn btn-custom" disabled>Expired</button>
-        @endif
-
-        <div class="job-description-section">
-            <h4>Job Description</h4>
-            {!! nl2br(e($job->description)) !!} {{-- Use nl2br to format line breaks, e() for escaping --}}
-        </div>
-
-        @if($job->pdf_path)
-            <div class="mb-3">
-                <p>
-                    <strong>Job Description (PDF):</strong>
-                    <a href="{{ asset('storage/' . $job->pdf_path) }}" target="_blank">Download PDF</a>
-                </p>
-            </div>
-        @endif
-
-        <div class="job-info" style="margin-top: 20px;"> {{-- Added margin to separate from description --}}
-            <p><strong>Deadline:</strong> {{ \Carbon\Carbon::parse($job->deadline)->format('F d, Y') }}</p>
-        </div>
-
-        @if ($job->is_expired)
-            <p class="expired">This job has expired.</p>
-        @endif
+        @empty
+            <p>No related jobs found in this category.</p>
+        @endforelse
     </div>
-
-    <div class="social-sharing">
-        <p><strong>Share this job:</strong></p>
-        <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank">Share on Facebook</a>
-        <a href="https://twitter.com/share?url={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank">Share on Twitter</a>
-        <a href="https://www.linkedin.com/shareArticle?url={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank">Share on LinkedIn</a>
-        <a href="https://wa.me/?text={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank">Share on WhatsApp</a>
-        <a href="https://t.me/share/url?url={{ urlencode(request()->fullUrl()) }}" class="btn btn-secondary" target="_blank">Share on Telegram</a>
+</div>
     </div>
 </div>
 
-<div class="bottom-nav">
-    <a href="{{ route('jobs.index') }}">Job Listings</a>
-    <a href="{{ route('about') }}">About</a>
-    <a href="{{ route('contact') }}">Contact</a>
-</div>
+    <div class="bottom-nav">
+        <a href="{{ route('jobs.index') }}">Job Listings</a>
+        <a href="{{ route('about') }}">About</a>
+        <a href="{{ route('contact') }}">Contact</a>
+    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0rF7DdeK2i5lfI33uMe1boI6Sdr0/hU6s7zKZ5lZYcuIl/Po" crossorigin="anonymous"></script>
 </body>

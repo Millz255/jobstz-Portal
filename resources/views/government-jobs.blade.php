@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Your Dream Job in Tech, Remote, and More - Jobstz</title>
-    <meta name="description" content="Jobstz: Your career portal to find the latest job listings. Explore remote jobs, tech jobs, government jobs, and opportunities in various locations and categories. Start your job search today!">
-    <meta name="keywords" content="jobs, job search, careers, remote jobs, tech jobs, government jobs, ajira, ajira za serikali, kazi, full-time jobs, part-time jobs, contract jobs, entry-level jobs, {{ implode(', ', $categories->pluck('name')->toArray()) }}, {{ implode(', ', $locations->pluck('name')->toArray()) }}">
+    <title>Jobstz - Your Career, Your Future</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
@@ -187,7 +185,7 @@
         }
 
         /* --- Article Sidebar Styles --- */
-            .article-sidebar {
+        .article-sidebar {
             padding-left: 30px; /* Spacing from job listings */
         }
 
@@ -209,7 +207,7 @@
             width: 100%; /* Keep width 100% to fit inside .article-sidebar-item */
             max-width: 100%; /* Ensure image doesn't exceed container width */
             max-height: 100px; /* Limit max height for thumbnail effect */
-            height: auto;    /* Maintain aspect ratio */
+            height: auto; 	  /* Maintain aspect ratio */
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
             display: block; /* Prevent bottom margin from image */
@@ -243,6 +241,7 @@
             color: #0d1759; /* Darker blue on hover */
             text-decoration: underline;
         }
+
 
     </style>
     <link rel="canonical" href="{{ url('/') }}">
@@ -331,8 +330,8 @@
                                 <p class="mb-0">
                                     <strong itemprop="name">{{ $job->company }}</strong> -  <i class="fas fa-map-marker-alt me-1"></i><span itemprop="jobLocation" itemscope itemtype="http://schema.org/Place">
                                         <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                                             <span itemprop="addressLocality">{{ optional($job->location)->name ?: 'Location not available' }}</span> </span>
-                                    </span>
+                                                <span itemprop="addressLocality">{{ optional($job->location)->name ?: 'Location not available' }}</span> </span>
+                                        </span>
                                 </p>
                             </div>
                         </div>

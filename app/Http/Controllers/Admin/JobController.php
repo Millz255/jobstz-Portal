@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Job;
+use App\Models\Category;
+use App\Models\Location;
+use App\Models\Article;
+use Illuminate\View\View;
 
 class JobController extends Controller
 {
@@ -131,40 +135,38 @@ class JobController extends Controller
 
     public function markExpired($id)
     {
-        // Find the job by ID
         $job = Job::findOrFail($id);
-    
-        // Mark the job as expired (adjust according to your database schema)
-        $job->status = 'expired'; // or whatever your status field is for expired jobs
+        $job->is_expired = true; // Assuming you have 'is_expired' as a boolean column
         $job->save();
-    
-        // Redirect back with a success message
         return redirect()->route('admin.jobs.index')->with('success', 'Job marked as expired!');
     }
 
 
-    public function governmentJobs()
+    public function governmentJobs(Request $request): View // Assuming you are using Request, and returning a View
     {
-        // Assuming category name is 'Government' in the categories table
-        $governmentCategory = \App\Models\Category::where('name', 'Government')->first();
+        // ... your existing logic to fetch government jobs ...
+        $query = Job::query()->whereHas('category', function ($query) {
+            $query->where('name', 'Government'); // Assuming 'Government' is your category name
+        });
 
-        if ($governmentCategory) {
-            $governmentCategoryId = $governmentCategory->id;
+        // Apply filters (search, category, location) if needed -  add your existing filtering logic here
 
-            // Get jobs with the government category
-            $jobs = Job::where('category_id', $governmentCategoryId)->with('location')->paginate(12);
+        $jobs = $query->latest()->paginate(12); // Or ->get() if not paginating
 
-            // Get categories and locations for dropdowns (for search filters in frontend)
-            $categories = \App\Models\Category::all();
-            $locations = \App\Models\Location::all();
+        // Fetch recent articles for the sidebar
+        $recentArticles = Article::orderBy('created_at', 'desc')
+                                ->limit(3)
+                                ->get();
 
-            // Return the frontend view 'jobs.index'
-            return view('jobs.index', compact('jobs', 'categories', 'locations'));
+        $categories = Category::all();
+        $locations = Location::all();
 
-        } else {
-            // Handle case where 'Government' category is not found (optional error handling)
-            return redirect()->route('jobs.index')->with('error', 'Government job category not found.');
-        }
+        return view('government-jobs', [ // Assuming your view file is named government-jobs.blade.php
+            'jobs' => $jobs,
+            'categories' => $categories,
+            'locations' => $locations,
+            'recentArticles' => $recentArticles, // Pass recent articles to the view
+        ]);
     }
 
 }
