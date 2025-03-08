@@ -64,53 +64,53 @@
             margin-bottom: 20px;
             box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            display: flex; /* Enable flexbox */
-            align-items: flex-start; /* Align items to the top */
+            display: flex; 
+            align-items: flex-start; 
         }
         .article-card:hover {
             transform: translateY(-3px);
             box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
         }
         .article-card .article-image-container {
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0; 
             margin-right: 15px;
-            width: 100px;      /* Further reduced width for thumbnail - now 100px */
-            height: 80px;     /* Further reduced height for thumbnail - now 80px */
+            width: 100px;      
+            height: 80px;     
             overflow: hidden;
-            border-radius: 6px; /* Slightly smaller border radius */
+            border-radius: 6px; 
         }
         .article-card .article-image-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 6px; /* Match container border-radius */
+            border-radius: 6px; 
             display: block;
         }
         .article-card .article-content {
             flex-grow: 1;
         }
         .article-card h3 {
-            font-size: 1.1rem; /* Further reduced title font size */
+            font-size: 1.1rem; 
             margin-top: 0;
-            margin-bottom: 3px; /* Further reduced margin below title */
+            margin-bottom: 3px; 
             color: #0d47a1;
-            line-height: 1.2;  /* Tighter line height for title */
+            line-height: 1.2;  
         }
         .article-card p {
-            font-size: 0.85rem; /* Further reduced snippet font size */
-            color: #666;      /* Slightly lighter snippet color */
-            margin-bottom: 5px; /* Further reduced margin below snippet */
-            line-height: 1.3;  /* Slightly tighter line height for snippet */
+            font-size: 0.85rem; 
+            color: #666;      
+            margin-bottom: 5px; 
+            line-height: 1.3;  
         }
         .article-card .author {
-            font-weight: normal; /* Author name less bold */
-            font-size: 0.8rem;  /* Further reduced author font size */
-            color: #777;      /* Lighter author color */
+            font-weight: normal; 
+            font-size: 0.8rem;  
+            color: #777;      
             margin-bottom: 0;
         }
-        .article-card .btn-primary { /* Style for the "Read More" button */
-            padding: 0.5rem 1rem; /* Slightly smaller button padding */
-            font-size: 0.85rem;  /* Smaller button font size */
+        .article-card .btn-primary { 
+            padding: 0.5rem 1rem; 
+            font-size: 0.85rem;  
         }
 
 
@@ -135,14 +135,14 @@
             margin-bottom: 15px;
         }
         .most-read-item img {
-            width: 50px;      /* Slightly smaller sidebar image width */
-            height: 50px;     /* Slightly smaller sidebar image height */
-            border-radius: 5px;  /* Smaller border radius for sidebar images */
+            width: 50px;      
+            height: 50px;     
+            border-radius: 5px;  
             object-fit: cover;
         }
         .most-read-item a {
-            font-size: 0.9rem;  /* Smaller sidebar link font size */
-            font-weight: normal; /* Sidebar link less bold */
+            font-size: 0.9rem;  
+            font-weight: normal; 
             text-decoration: none;
             color: #0d47a1;
         }
@@ -184,7 +184,7 @@
             }
             .article-card .article-image-container {
                 width: 100%;
-                height: 150px;     /* Reduced height on small screens */
+                height: 150px;     
                 margin-bottom: 10px;
                 margin-right: 0;
             }
