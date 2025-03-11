@@ -10,7 +10,8 @@
         <div>
             <h3 class="mb-0" itemprop="title">{{ $job->title }}
                 @if($job->soon_expiring)
-                    <i class="fas fa-clock text-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Job application deadline approaching"></i> {{-- Clock Icon --}}
+                    <i class="fas fa-clock text-warning ms-2"  {{-- Clock Icon, always visible --}}
+                       data-bs-toggle="tooltip" data-bs-placement="top" title="Job application deadline approaching"></i>
                 @endif
             </h3>
             <p class="mb-0">
