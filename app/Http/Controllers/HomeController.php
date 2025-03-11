@@ -19,7 +19,7 @@ class HomeController extends Controller
         $category_id = $request->input('category');
         $location_id = $request->input('location');
 
-        $jobsQuery = Job::query() // Changed $jobs to $jobsQuery to not conflict later
+        $jobsQuery = Job::query()
             ->when($search, function ($query) use ($search) {
                 $query->where('title', 'like', "%$search%")
                     ->orWhere('description', 'like', "%$search%");
@@ -31,30 +31,29 @@ class HomeController extends Controller
                 $query->where('location_id', $location_id);
             });
 
-        $jobs = $jobsQuery->latest()->take(10)->get(); // Fetch only the latest 10 jobs for initial load
+        $jobs = $jobsQuery->latest()->take(10)->get();
+        $jobsCount = $jobsQuery->count(); // Count the jobs after applying filters
 
         $categories = Category::all();
         $locations = Location::all();
         $recentArticles = Article::latest()->take(5)->get();
 
-        return view('index', compact('jobs', 'categories', 'locations', 'recentArticles'));
+        return view('index', compact('jobs', 'categories', 'locations', 'recentArticles', 'jobsCount', 'search', 'category_id', 'location_id')); // Pass jobsCount and search parameters to the view
     }
 
-    public function show($slug) 
+    public function show($slug)
     {
         $job = Job::with(['category', 'location'])
             ->where('slug', $slug)
             ->firstOrFail();
 
-        
         $relatedJobs = Job::where('category_id', $job->category_id)
-            ->where('id', '!=', $job->id) 
+            ->where('id', '!=', $job->id)
             ->latest()
             ->take(5)
             ->get();
-  
 
-        return view('jobs.show', compact('job', 'relatedJobs')); 
+        return view('jobs.show', compact('job', 'relatedJobs'));
     }
 
     public function about()
@@ -64,28 +63,28 @@ class HomeController extends Controller
 
     public function submitContactForm(Request $request)
     {
-        
+
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'subject' => 'required|string|max:255', 
+            'subject' => 'required|string|max:255',
             'message' => 'required|string',
         ]);
-    
-        
+
+
         ContactMessage::create($validatedData);
-    
-        
+
+
         $adminEmail = 'mgimwaemily@gmail.com';
         Mail::to($adminEmail)->send(new ContactFormSubmitted($validatedData));
-    
+
         return redirect()->route('contact')->with('success', 'Your message has been sent successfully!');
     }
 
 
     public function contact()
     {
-        return view('contact'); 
+        return view('contact');
     }
 
 

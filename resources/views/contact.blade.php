@@ -169,7 +169,7 @@
 
         <div class="contact-info">
             <h5 class="mb-3">Contact Information</h5>
-            <p><strong>Email:</strong> <a href="mailto:your-email@example.com">mgimwaemily@icloud.com</a></p>
+            <p><strong>Email:</strong> <a href="mailto:info@jobstz.com">info@jobstz.com</a></p>
         </div>
     </div>
 

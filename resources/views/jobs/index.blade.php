@@ -323,53 +323,69 @@
 
 <div class="container">
     <button id="open-search-widget-btn" onclick="toggleSearchWidget()" aria-label="Show Job Search Widget"><i class="fas fa-search"></i> Show Job Search</button>
-
     <div class="row">
-        <div class="col-lg-8"> <h2 class="mb-4">Latest Job Listings</h2>
-            <div id="job-listings">
-                @foreach ($jobs as $job)
-                    <div class="job-listing @if($job->expired) expired @elseif($job->soon_expiring) soon-expiring @endif">
-                        <div class="d-flex align-items-center mb-3">
-                            <img src="{{ asset('storage/' . $job->company_logo) }}" alt="{{ $job->company }} logo" class="me-3" style="max-width: 80px;">
-                                <div>
-                                    <h3 class="mb-0">{{ $job->title }}</h3>
-                                    <p class="mb-0">
-                                        <strong>{{ $job->company }}</strong> - <i class="fas fa-map-marker-alt me-1"></i>{{ optional($job->location)->name ?: 'Location not available' }}
-                                    </p>
-                                </div>
-                            </div>
-                            <p class="mb-3">{{ Str::limit($job->description, 150) }}</p>
-                            <a href="{{ route('jobs.show', [$job->slug, $job->id]) }}" class="btn btn-blue">View Details</a>
-                        </div>
-                    @endforeach
-                </div>
+        <div class="col-lg-8">
+            @if(request()->has('search') || request()->has('category') || request()->has('location'))
+                @if ($jobsCount > 0)
+                    <div class="alert alert-success" role="alert">
+                        <strong>{{ $jobsCount }} jobs found!</strong> Showing results for:
+                        @if(request()->input('search'))
+                            <strong>Keyword:</strong> "{{ request()->input('search') }}"
+                        @endif
+                        @if(request()->input('category'))
+                            <strong>Category:</strong> "{{ optional($categories->find(request()->input('category')))->name }}"
+                        @endif
+                        @if(request()->input('location'))
+                            <strong>Location:</strong> "{{ optional($locations->find(request()->input('location')))->name }}"
+                        @endif
+                        <button type="button" class="btn-close float-end" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+            @endif
 
-                <div id="load-more" class="text-center mt-5">
-                    @if (count($jobs) >= 12)
-                        <button class="btn btn-blue" id="load-more-button">Load More Jobs</button>
+            <h2 class="mb-4">Latest Job Listings</h2>
+            <div id="job-listings">
+                @if ($jobsCount > 0)
+                    @foreach ($jobs as $job)
+                        @include('partials.job_listing', ['job' => $job])
+                    @endforeach
+                @else
+                    @if(request()->has('search') || request()->has('category') || request()->has('location'))
+                        <div class="alert alert-info" role="alert">
+                            <strong>Sorry!</strong> We couldn't find any job listings matching your search criteria. <br>
+                            Please try adjusting your search terms or explore other categories and locations. We regularly update our listings, so be sure to check back soon!
+                        </div>
+                    @else
+                        <div class="alert alert-warning" role="alert">
+                            <strong>No job listings available yet.</strong> Please check back later for new opportunities.
+                        </div>
                     @endif
-                </div>
+                @endif
             </div>
 
-
-            <div class="col-lg-4 article-sidebar">
-                <h3 class="mb-3"><b>Recent Articles</b></h3>
-                @foreach($recentArticles as $article)
-                <div class="article-sidebar-item">
-                    <a href="{{ route('articles.show', $article->slug) }}" style="display: block; text-decoration: none; color: inherit;">
-                        <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }} Thumbnail" class="article-thumbnail">
-                        <div class="article-content">
-                            <h4 class="article-title">{{ $article->title }}</h4>
-                        </div>
-                    </a>
-                    <div class="article-content" style="padding-top: 0;">
-                        <a href="{{ route('articles.show', $article->slug) }}" class="btn btn-blue btn-sm">Read More <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-                @endforeach
+            <div id="load-more" class="text-center mt-5 {{ $jobsCount <= 10 ? 'd-none' : '' }}">
+                <button class="btn btn-blue" id="load-more-button">Load More Jobs</button>
             </div>
         </div>
+
+        <div class="col-lg-4 article-sidebar">
+            <h3 class="mb-3"><b>Recent Articles</b></h3>
+            @foreach($recentArticles as $article)
+            <div class="article-sidebar-item">
+                <a href="{{ route('articles.show', $article->slug) }}" style="display: block; text-decoration: none; color: inherit;">
+                    <img src="{{ asset('storage/' . $article->image) }}" alt="{{ $article->title }} Thumbnail" class="article-thumbnail">
+                    <div class="article-content">
+                        <h4 class="article-title">{{ $article->title }}</h4>
+                    </div>
+                </a>
+                <div class="article-content" style="padding-top: 0;">
+                    <a href="{{ route('articles.show', $article->slug) }}" class="btn btn-blue btn-sm">Read More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
+</div>
 
     <div class="bottom-nav">
         <a href="{{ route('jobs.index') }}">Job Listings</a>

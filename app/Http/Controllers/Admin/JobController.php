@@ -142,16 +142,15 @@ class JobController extends Controller
     }
 
 
-    public function governmentJobs(Request $request): View 
+    public function governmentJobs(Request $request): View
     {
-        
+
         $query = Job::query()->whereHas('category', function ($query) {
-            $query->where('name', 'Government'); 
+            $query->where('name', 'Government');
         });
 
-        
-
-        $jobs = $query->latest()->paginate(12); 
+        $jobsCount = $query->count(); // Count the jobs before pagination
+        $jobs = $query->latest()->paginate(12);
 
         // Fetch recent articles for the sidebar
         $recentArticles = Article::orderBy('created_at', 'desc')
@@ -161,11 +160,12 @@ class JobController extends Controller
         $categories = Category::all();
         $locations = Location::all();
 
-        return view('government-jobs', [ 
+        return view('government-jobs', [
             'jobs' => $jobs,
             'categories' => $categories,
             'locations' => $locations,
-            'recentArticles' => $recentArticles, 
+            'recentArticles' => $recentArticles,
+            'jobsCount' => $jobsCount, // Pass jobsCount to the view
         ]);
     }
 
