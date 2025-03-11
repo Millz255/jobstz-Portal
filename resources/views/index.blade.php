@@ -288,7 +288,7 @@
 </nav>
 
 <div class="hero-section">
-    <h1 class="hero-title">Find Your Dream Job, Remote Jobs & other Opportunities on Jobstz</h1>
+    <h1 class="hero-title">Your Dream Job on Jobstz</h1>
     <p class="hero-slogan">Start Your Job Search Today and Build Your Future with Leading Employers.</p>
 </div>
 
@@ -358,7 +358,7 @@
         </div>
 
         <div class="col-lg-4 article-sidebar">
-            <h3 class="mb-3">Recent Articles</h3>
+            <h3 class="mb-3"></b>Recent Articles</b></h3>
             @foreach($recentArticles as $article)
             <div class="article-sidebar-item">
                 <a href="{{ route('articles.show', $article->slug) }}" style="display: block; text-decoration: none; color: inherit;">
@@ -395,7 +395,7 @@
                 },
                 success: function (response) {
                     $('#job-listings').append(response.html);
-                    if (response.jobs_remaining < 12) {
+                    if (response.jobs_remaining <= 0) { 
                         $('#load-more').hide();
                     }
                 }

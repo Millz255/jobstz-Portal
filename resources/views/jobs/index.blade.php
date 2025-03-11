@@ -286,8 +286,8 @@
 </nav>
 
 <div class="hero-section">
-    <h1 class="hero-title">Find Your Dream Job, Remote Jobs & other Opportunities on Jobstz</h1>
-    <p class="hero-slogan">Your Career, Your Future starts here.</p>
+    <h1 class="hero-title">Your Dream Job on Jobstz</h1>
+    <p class="hero-slogan">Your Career & Your Future starts here.</p>
 </div>
 
 <div class="sidebar-widget" id="searchSidebar">  <button id="close-search-widget" onclick="toggleSearchWidget()" aria-label="Close Search Widget">&times;</button>
@@ -353,7 +353,7 @@
 
 
             <div class="col-lg-4 article-sidebar">
-                <h3 class="mb-3">Recent Articles</h3>
+                <h3 class="mb-3"><b>Recent Articles</b></h3>
                 @foreach($recentArticles as $article)
                 <div class="article-sidebar-item">
                     <a href="{{ route('articles.show', $article->slug) }}" style="display: block; text-decoration: none; color: inherit;">
@@ -380,39 +380,39 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0tn9kY1wzO8O+Nf4vFLHKkBd/l6ZxDqUOEdXn7r4WR0mRp4p" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function () {
-            $('#load-more-button').on('click', function () {
-                $.ajax({
-                    url: '{{ route('jobs.loadMore') }}',
-                    type: 'GET',
-                    data: {
-                        offset: $('#job-listings .job-listing').length
-                    },
-                    success: function (response) {
-                        $('#job-listings').append(response.html);
-                        if (response.jobs_remaining < 12) {
-                            $('#load-more').hide();
-                        }
+    $(document).ready(function () {
+        $('#load-more-button').on('click', function () {
+            $.ajax({
+                url: '{{ route('jobs.loadMore') }}',
+                type: 'GET',
+                data: {
+                    offset: $('#job-listings .job-listing').length
+                },
+                success: function (response) {
+                    $('#job-listings').append(response.html);
+                    if (response.jobs_remaining <= 0) { // Corrected condition
+                        $('#load-more').hide();
                     }
-                });
+                }
             });
         });
+    });
 
-        function toggleSearchWidget() {
-            const sidebar = document.getElementById('searchSidebar');
-            sidebar.classList.toggle('open');
-        }
+    function toggleSearchWidget() {
+        const sidebar = document.getElementById('searchSidebar');
+        sidebar.classList.toggle('open');
+    }
 
-        // JavaScript to manually toggle navbar collapse (ADD THIS):
-        const navbarToggler = document.getElementById('navbarTogglerBtn');
-        const navbarNav = document.getElementById('navbarNav');
+    // JavaScript to manually toggle navbar collapse
+    const navbarToggler = document.getElementById('navbarTogglerBtn');
+    const navbarNav = document.getElementById('navbarNav');
 
-        navbarToggler.addEventListener('click', () => {
-            navbarNav.classList.toggle('show');
-            navbarToggler.setAttribute('aria-expanded', navbarNav.classList.contains('show'));
-        });
+    navbarToggler.addEventListener('click', () => {
+        navbarNav.classList.toggle('show');
+        navbarToggler.setAttribute('aria-expanded', navbarNav.classList.contains('show'));
+    });
 
-    </script>
+</script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0tn9kY1wzO8O+Nf4vFLHKkBd/l6ZxDqUOEdXn7r4WR0mRp4p" crossorigin="anonymous"></script>

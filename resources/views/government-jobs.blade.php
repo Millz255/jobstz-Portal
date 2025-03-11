@@ -290,8 +290,8 @@
 </nav>
 
 <div class="hero-section">
-    <h1 class="hero-title">Find Your Dream Job, Remote Jobs & other Opportunities on Jobstz</h1>
-    <p class="hero-slogan">Start Your Job Search Today and Build Your Future with Leading Employers.</p>
+    <h1 class="hero-title">Government Jobs</h1>
+    <p class="hero-slogan">Find All the Government Jobs Listed Here .</p>
 </div>
 
 <div class="sidebar-widget" id="searchSidebar">  <button id="close-search-widget" onclick="toggleSearchWidget()" aria-label="Close Search Widget">&times;</button>
@@ -400,19 +400,11 @@
                 },
                 success: function (response) {
                     $('#job-listings').append(response.html);
-                    if (response.jobs_remaining < 12) {
+                    if (response.jobs_remaining <= 0) { // Corrected condition
                         $('#load-more').hide();
                     }
                 }
             });
-        });
-
-        // When the navbar toggler is clicked, ensure the search widget is closed.
-        $('.navbar-toggler').on('click', function() {
-            const sidebar = document.getElementById('searchSidebar');
-            if (sidebar.classList.contains('open')) {
-                sidebar.classList.remove('open');
-            }
         });
     });
 

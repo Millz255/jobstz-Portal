@@ -51,7 +51,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('jobs.index');
-Route::get('/jobs/load-more', [HomeController::class, 'loadMore'])->name('jobs.loadMore');
+Route::get('/jobs/load-more', [HomeController::class, 'loadMoreJobs'])->name('jobs.loadMore');
 Route::get('/jobs/{slug}', [HomeController::class, 'show'])->name('jobs.show');
 Route::get('/search', [HomeController::class, 'search'])->name('jobs.search');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
