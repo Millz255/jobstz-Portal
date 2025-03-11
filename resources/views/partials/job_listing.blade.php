@@ -8,12 +8,17 @@
     <div class="d-flex align-items-center mb-3">
         <img src="{{ asset('storage/' . $job->company_logo) }}" alt="{{ $job->company }} logo" class="me-3" style="max-width: 80px;" itemprop="image">
         <div>
-            <h3 class="mb-0" itemprop="title">{{ $job->title }}</h3>
+            <h3 class="mb-0" itemprop="title">{{ $job->title }}
+                @if($job->soon_expiring)
+                    <i class="fas fa-clock text-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Job application deadline approaching"></i> {{-- Clock Icon --}}
+                @endif
+            </h3>
             <p class="mb-0">
                 <strong itemprop="name">{{ $job->company }}</strong> -  <i class="fas fa-map-marker-alt me-1"></i><span itemprop="jobLocation" itemscope itemtype="http://schema.org/Place">
                     <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-                        <span itemprop="addressLocality">{{ optional($job->location)->name ?: 'Location not available' }}</span> </span>
+                        <span itemprop="addressLocality">{{ optional($job->location)->name ?: 'Location not available' }}</span>
                     </span>
+                </span>
             </p>
         </div>
     </div>
